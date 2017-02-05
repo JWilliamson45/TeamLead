@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/context_switch_grid"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="16dp"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:columnCount="3"
+    tools:context="com.jameswilliamson.teamlead.ContextSwitchActivity">
+
+    <Button
+        android:id="@+id/grid_index_0"
+        android:layout_column="0"
+        android:layout_row="0"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="1"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_gravity="fill"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_blue_bright"
+        />
+
+    <Button
+        android:id="@+id/grid_index_1"
+        android:layout_column="1"
+        android:layout_row="0"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="1"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_gravity="fill"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_green_light"
+        />
+
+    <Button
+        android:id="@+id/grid_index_2"
+        android:layout_column="2"
+        android:layout_row="0"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="1"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_gravity="fill"
+        android:layout_height="wrap_content"
+        android:background="@android:color/holo_red_dark"
+        />
+
+    <RelativeLayout
+        android:id="@+id/grid_index_3"
+        android:layout_column="0"
+        android:layout_row="1"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="1"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_gravity="fill"
+        android:background="@android:color/darker_gray"
+        />
+
+    <RelativeLayout
+        android:id="@+id/grid_index_4"
+        android:layout_column="1"
+        android:layout_row="1"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="1"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_gravity="fill"
+        android:background="@android:color/holo_purple"
+        />
+
+    <RelativeLayout
+        android:id="@+id/grid_index_5"
+        android:layout_column="2"
+        android:layout_row="1"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="1"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_gravity="fill"
+        android:background="@android:color/holo_orange_light"
+        />
+
+    <RelativeLayout
+        android:id="@+id/grid_index_6"
+        android:layout_column="0"
+        android:layout_row="2"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="1"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_gravity="fill"
+        android:background="@android:color/holo_blue_light"
+        />
+
+    <RelativeLayout
+        android:id="@+id/grid_index_7"
+        android:layout_column="1"
+        android:layout_row="2"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="1"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_gravity="fill"
+        android:background="@android:color/holo_orange_dark"
+        />
+
+    <RelativeLayout
+        android:id="@+id/grid_index_8"
+        android:layout_column="2"
+        android:layout_row="2"
+        android:layout_columnSpan="1"
+        android:layout_rowSpan="1"
+        android:layout_columnWeight="1"
+        android:layout_rowWeight="1"
+        android:layout_gravity="fill"
+        android:background="@android:color/holo_red_light"
+        />
+
+</GridLayout>
