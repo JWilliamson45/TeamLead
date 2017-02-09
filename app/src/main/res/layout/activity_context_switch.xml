@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/context_switch_grid"
+    android:id="@+id/context_switch_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:numColumns="4"
-    android:verticalSpacing="0dp"
-    android:horizontalSpacing="0dp"
-    android:stretchMode="columnWidth"
-    android:gravity="center"
-    tools:context="com.jameswilliamson.teamlead.ContextSwitchActivity"/>
+    android:layout_height="match_parent">
+
+    <GridView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/context_switch_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        android:numColumns="4"
+        android:verticalSpacing="8dp"
+        android:horizontalSpacing="8dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        tools:context="com.jameswilliamson.teamlead.ContextSwitchActivity" />
+
+</RelativeLayout>
+

@@ -25,7 +25,7 @@ public class Task
     private String m_TaskName;                         // The name of the task
     private boolean m_TaskActive;                      // Marks whether or not this task is currently active
     private long m_TaskStartMs;                        // A timestamp captured when the user switches to this task
-    private long m_TimeSpentMs;                        // The total time spent performing the task, in milliseconds
+    private long m_PreviousTaskRuntimeMs;              // Total time spent on all previous iterations of the task
     private DecimalFormat m_TimeFormatter;             // Formats task time for presentation to the user
 
     /**
@@ -37,7 +37,7 @@ public class Task
         m_TaskName = taskName;
         m_TaskActive = false;
         m_TaskStartMs = 0;
-        m_TimeSpentMs = 0;
+        m_PreviousTaskRuntimeMs = 0;
         m_TimeFormatter = new DecimalFormat( TIMER_FIELD_FORMAT );
     }
 
@@ -87,8 +87,7 @@ public class Task
         if( m_TaskActive == true )
         {
             // Add the time spent on the task to the running total
-            long taskStopMs = SystemClock.elapsedRealtime();
-            m_TimeSpentMs += ( taskStopMs - m_TaskStartMs );
+            m_PreviousTaskRuntimeMs += getCurrentTaskRuntimeMs();
             m_TaskActive = false;
         }
         else
@@ -103,14 +102,14 @@ public class Task
     /**
      * Returns the total amount of time spent performing the task, in "hh:mm:ss" format.
      *
-     * @return The total number of time spent performing the task, in UI-friendly hh:mm:ss format
+     * @return The total amount of time spent performing the task, in UI-friendly hh:mm:ss format
      */
-    public String getTimeSpent()
+    public String getTotalTaskRuntime()
     {
         String timeSpent = "";
 
         // Convert total millisecond task time to hours, minutes, and seconds
-        int seconds = (int)( m_TimeSpentMs / MS_PER_SEC );
+        int seconds = (int)( getTotalTaskRuntimeMs() / MS_PER_SEC );
         int minutes = ( seconds / SEC_PER_MIN );
         int hours = ( minutes / MIN_PER_HOUR );
 
@@ -126,5 +125,33 @@ public class Task
         timeSpent = timeSpent.concat( m_TimeFormatter.format( seconds ).toString() );
 
         return( timeSpent );
+    }
+
+    /**
+     * Returns the total amount of time spent performing the task, in milliseconds.
+     *
+     * @return The total task runtime, in milliseconds.
+     */
+    public long getTotalTaskRuntimeMs()
+    {
+        return( m_PreviousTaskRuntimeMs + getCurrentTaskRuntimeMs() );
+    }
+
+    /**
+     * Returns the runtime - in milliseconds - of the current iteration of the task, if the task is active.
+     *
+     * @return The current task runtime, or zero if the task is not active
+     */
+    private long getCurrentTaskRuntimeMs()
+    {
+        long currentTaskRuntimeMs = 0;
+
+        if( m_TaskActive == true )
+        {
+            // Get the time spent on the task since the start of the current iteration
+            currentTaskRuntimeMs = ( SystemClock.elapsedRealtime() - m_TaskStartMs );
+        }
+
+        return( currentTaskRuntimeMs );
     }
 }

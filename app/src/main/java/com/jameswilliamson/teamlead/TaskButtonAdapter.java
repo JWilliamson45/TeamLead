@@ -1,7 +1,17 @@
+/**
+ * TaskButtonAdapter.java
+ *
+ * TODO: descripton
+ *
+ * @author James Williamson
+ * @version 0.1.0
+ */
+
 package com.jameswilliamson.teamlead;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -9,9 +19,6 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
-/**
- * Created by JEWilli1 on 2/6/2017.
- */
 
 public class TaskButtonAdapter extends BaseAdapter
 {
@@ -19,6 +26,12 @@ public class TaskButtonAdapter extends BaseAdapter
     private ArrayList<Task> tasks;                     // The list of tasks to be displayed on the GUI
     private Context context;                           // The associated context
 
+    /**
+     * Constructs the task button adapter.
+     *
+     * @param c The application context
+     * @param tasks The list of tasks to be displayed on the GridView
+     */
     public TaskButtonAdapter( Context c, ArrayList<Task> tasks )
     {
         context = c;
@@ -55,20 +68,20 @@ public class TaskButtonAdapter extends BaseAdapter
     {
         Button taskButton;
 
-        // TODO: 2/6/2017 make this an inflated button instead to decouple UI from logic
-
         if( convertView == null )
         {
-            Task task = tasks.get( position );
-
-            taskButton = new Button( context );
-            taskButton.setText( task.getTaskName() + "\n\n" + task.getTimeSpent() );
-            taskButton.setBackgroundColor( Color.BLUE );
+            // // TODO: 2/8/2017 Verify this works as expected; should it be run from another thread?
+            LayoutInflater inflater = (LayoutInflater)context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            View view = inflater.inflate( R.layout.task_button, null );
+            taskButton = (Button)view.findViewById( R.id.task_button );
         }
         else
         {
             taskButton = (Button)convertView;
         }
+
+        Task taskView = tasks.get( position );
+        taskButton.setText( taskView.getTaskName() + "\n\n" + taskView.getTotalTaskRuntime() );
 
         return( taskButton );
     }
