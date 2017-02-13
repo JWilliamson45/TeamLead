@@ -4,41 +4,39 @@
  * Models an individual task that a team leader may perform in a typical workday.
  *
  * @author James Williamson
- * @version 0.1.0
+ * @version 0.2.0
  */
 
 package com.jameswilliamson.teamlead;
 
-import android.os.SystemClock;
-import java.text.DecimalFormat;
-
 
 public class Task
 {
-    // Private constants
-    private final String TIMER_FIELD_FORMAT = "00";    // Format used for presenting task time to the user
-    private final int MS_PER_SEC = 1000;               // Conversion constant for seconds <-> milliseconds
-    private final int SEC_PER_MIN = 60;                // Conversion constant for seconds <-> minutes
-    private final int MIN_PER_HOUR = 60;               // Conversion constant for minutes <-> hours
-
     // Private member fields
     private String m_TaskName;                         // The name of the task
     private boolean m_TaskActive;                      // Marks whether or not this task is currently active
-    private long m_TaskStartMs;                        // A timestamp captured when the user switches to this task
-    private long m_PreviousTaskRuntimeMs;              // Total time spent on all previous iterations of the task
-    private DecimalFormat m_TimeFormatter;             // Formats task time for presentation to the user
+    private long m_TotalTaskRuntimeMs;                 // Total time spent on all previous iterations of the task
 
     /**
      * Constructs a new task and gives it a name.
+     *
      * @param taskName The name of the task
      */
     public Task( String taskName )
     {
         m_TaskName = taskName;
         m_TaskActive = false;
-        m_TaskStartMs = 0;
-        m_PreviousTaskRuntimeMs = 0;
-        m_TimeFormatter = new DecimalFormat( TIMER_FIELD_FORMAT );
+        m_TotalTaskRuntimeMs = 0;
+    }
+
+    /**
+     * Sets a new name for the task.
+     *
+     * @return The new name for the task
+     */
+    public void setTaskName( String taskName )
+    {
+        m_TaskName = taskName;
     }
 
     /**
@@ -52,106 +50,91 @@ public class Task
     }
 
     /**
-     * Marks a switch to the task, and begins recording time spent doing the task.
-     *
-     * @return An error code indicative of success or failure
+     * Marks the task as currently active.
      */
-    public ErrorCode begin()
+    public void setAsActive()
     {
-        ErrorCode taskErr = ErrorCode.ERR_NONE;
-
-        if( m_TaskActive == false )
-        {
-            m_TaskStartMs = SystemClock.elapsedRealtime();
-            m_TaskActive = true;
-        }
-        else
-        {
-            // Task is already active
-            taskErr = ErrorCode.ERR_TASK_ALREADY_STARTED;
-        }
-
-        return( taskErr );
+        m_TaskActive = true;
     }
 
     /**
-     * Marks a switch off the task, and stops recording time spent doing the task. The total time spent on the task
-     * for the current duration is tallied and stored.
-     *
-     * @return An error code indicative of success or failure
+     * Marks the task as currently inactive.
      */
-    public ErrorCode end()
+    public void setAsInactive()
     {
-        ErrorCode taskErr = ErrorCode.ERR_NONE;
-
-        if( m_TaskActive == true )
-        {
-            // Add the time spent on the task to the running total
-            m_PreviousTaskRuntimeMs += getCurrentTaskRuntimeMs();
-            m_TaskActive = false;
-        }
-        else
-        {
-            // Task is already inactive
-            taskErr = ErrorCode.ERR_TASK_ALREADY_STOPPED;
-        }
-
-        return( taskErr );
+        m_TaskActive = false;
     }
 
     /**
-     * Returns the total amount of time spent performing the task, in "hh:mm:ss" format.
+     * Returns whether or not the task is active.
      *
-     * @return The total amount of time spent performing the task, in UI-friendly hh:mm:ss format
+     * @return True if the task is active, false otherwise
      */
-    public String getTotalTaskRuntime()
+    public boolean isActive()
     {
-        String timeSpent = "";
-
-        // Convert total millisecond task time to hours, minutes, and seconds
-        int seconds = (int)( getTotalTaskRuntimeMs() / MS_PER_SEC );
-        int minutes = ( seconds / SEC_PER_MIN );
-        int hours = ( minutes / MIN_PER_HOUR );
-
-        // Adjust for remainder so that hh:mm:ss reported to user is cohesive
-        seconds = ( seconds % SEC_PER_MIN );
-        minutes = ( minutes % MIN_PER_HOUR );
-
-        // Build string and return to user
-        timeSpent = timeSpent.concat( m_TimeFormatter.format( hours ).toString() );
-        timeSpent = timeSpent.concat( ":" );
-        timeSpent = timeSpent.concat( m_TimeFormatter.format( minutes ).toString() );
-        timeSpent = timeSpent.concat( ":" );
-        timeSpent = timeSpent.concat( m_TimeFormatter.format( seconds ).toString() );
-
-        return( timeSpent );
+        return( m_TaskActive );
     }
 
     /**
-     * Returns the total amount of time spent performing the task, in milliseconds.
+     * Adds the given millisecond count to the total overall runtime of the task.
      *
-     * @return The total task runtime, in milliseconds.
+     * @param runtimeMs The amount of runtime to add to the task, in milliseconds
      */
-    public long getTotalTaskRuntimeMs()
+    public void addRuntimeMs( long runtimeMs )
     {
-        return( m_PreviousTaskRuntimeMs + getCurrentTaskRuntimeMs() );
+        m_TotalTaskRuntimeMs += runtimeMs;
     }
 
     /**
-     * Returns the runtime - in milliseconds - of the current iteration of the task, if the task is active.
+     * Returns the total runtime of all previous iterations of the task.
      *
-     * @return The current task runtime, or zero if the task is not active
+     * @return The runtime of all previous iterations of the task, in milliseconds
      */
-    private long getCurrentTaskRuntimeMs()
+    public long getRuntimeMs()
     {
-        long currentTaskRuntimeMs = 0;
+        return( m_TotalTaskRuntimeMs );
+    }
 
-        if( m_TaskActive == true )
+    /**
+     * Determines if the Task is equal to another given Task.
+     *
+     * @param obj The other object to test for equality
+     * @return True if the Tasks are equal, false otherwise
+     */
+    @Override
+    public boolean equals( Object obj )
+    {
+        boolean isEqual = false;
+
+        if( obj != null )
         {
-            // Get the time spent on the task since the start of the current iteration
-            currentTaskRuntimeMs = ( SystemClock.elapsedRealtime() - m_TaskStartMs );
+            if( obj instanceof Task )
+            {
+                Task otherTask = (Task)obj;
+
+                if( m_TaskName.equals( otherTask.getTaskName() ) )
+                {
+                    isEqual = true;
+                }
+            }
         }
 
-        return( currentTaskRuntimeMs );
+        return( isEqual );
+    }
+
+    /**
+     * Returns the hash code of the Task object.
+     *
+     * @return A hash code value for this object
+     */
+    @Override
+    public int hashCode()
+    {
+        int result = 716;
+
+        // Factor in task's name (the string hash code)
+        result = 37 * result + m_TaskName.hashCode();
+
+        return( result );
     }
 }

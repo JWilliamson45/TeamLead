@@ -14,7 +14,8 @@ public enum ErrorCode
 {
     ERR_NONE( 0, "No error" ),
     ERR_TASK_ALREADY_STARTED( 1, "The selected task is already started" ),
-    ERR_TASK_ALREADY_STOPPED( 2, "The selected task is already stopped" );
+    ERR_TASK_ALREADY_STOPPED( 2, "The selected task is already stopped" ),
+    ERR_TASK_INVALID( 3, "The specified task is invalid" );
 
     // Enumeration constants
     private final int m_errCode;
@@ -26,7 +27,7 @@ public enum ErrorCode
      * @param errCode The unique error code handle
      * @param description A string description of the associated error
      */
-    private ErrorCode( int errCode, String description )
+    ErrorCode( int errCode, String description )
     {
         m_errCode = errCode;
         m_Description = description;
