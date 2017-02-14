@@ -4,7 +4,9 @@
  * Error codes that may be returned from various subsystems within the TeamLead application.
  *
  * @author James Williamson
- * @version 0.1.0
+ * @version 0.2.0
+ *
+ * @formatter:off
  */
 
 package com.jameswilliamson.teamlead;

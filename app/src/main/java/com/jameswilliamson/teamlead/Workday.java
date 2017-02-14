@@ -8,6 +8,8 @@
  *
  * @author James Williamson
  * @version 0.2.0
+ *
+ * @formatter:off
  */
 
 package com.jameswilliamson.teamlead;
@@ -139,36 +141,40 @@ public class Workday
      */
     public String getTaskRuntime( int taskIndex )
     {
-        String timeSpent = "xx:xx:xx";
+        String timeSpent = "00:00:00";
 
         // Boundary check
         if( taskIndex < m_Tasks.size() )
         {
-            // Get the task associated with the index and query the runtime
-            Task task = m_Tasks.get( taskIndex );
-            long taskRuntimeMs = task.getRuntimeMs();
-
-            if( m_ActiveTask.getTask().equals( task ) )
+            // If no task is active, cannot return an elapsed time
+            if( m_ActiveTask != null )
             {
-                // The task being queried is currently active, so add the up-to-date time to the total
-                taskRuntimeMs += m_ActiveTask.getRuntimeMs();
+                // Get the task associated with the index and query the runtime
+                Task task = m_Tasks.get( taskIndex );
+                long taskRuntimeMs = task.getRuntimeMs();
+
+                if( m_ActiveTask.getTask().equals( task ) )
+                {
+                    // The task being queried is currently active, so add the up-to-date time to the total
+                    taskRuntimeMs += m_ActiveTask.getRuntimeMs();
+                }
+
+                // Convert total millisecond task time to hours, minutes, and seconds
+                int seconds = (int)( taskRuntimeMs / MS_PER_SEC );
+                int minutes = ( seconds / SEC_PER_MIN );
+                int hours = ( minutes / MIN_PER_HOUR );
+
+                // Adjust for remainder so that hh:mm:ss reported to user is cohesive
+                seconds = ( seconds % SEC_PER_MIN );
+                minutes = ( minutes % MIN_PER_HOUR );
+
+                // Build string and return to user
+                timeSpent = m_TimeFormatter.format( hours );
+                timeSpent = timeSpent.concat( ":" );
+                timeSpent = timeSpent.concat( m_TimeFormatter.format( minutes ) );
+                timeSpent = timeSpent.concat( ":" );
+                timeSpent = timeSpent.concat( m_TimeFormatter.format( seconds ) );
             }
-
-            // Convert total millisecond task time to hours, minutes, and seconds
-            int seconds = (int)( taskRuntimeMs / MS_PER_SEC );
-            int minutes = ( seconds / SEC_PER_MIN );
-            int hours = ( minutes / MIN_PER_HOUR );
-
-            // Adjust for remainder so that hh:mm:ss reported to user is cohesive
-            seconds = ( seconds % SEC_PER_MIN );
-            minutes = ( minutes % MIN_PER_HOUR );
-
-            // Build string and return to user
-            timeSpent = m_TimeFormatter.format( hours );
-            timeSpent = timeSpent.concat( ":" );
-            timeSpent = timeSpent.concat( m_TimeFormatter.format( minutes ) );
-            timeSpent = timeSpent.concat( ":" );
-            timeSpent = timeSpent.concat( m_TimeFormatter.format( seconds ) );
         }
 
         return( timeSpent );

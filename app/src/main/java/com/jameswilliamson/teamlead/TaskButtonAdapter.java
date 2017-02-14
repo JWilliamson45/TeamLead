@@ -5,6 +5,8 @@
  *
  * @author James Williamson
  * @version 0.2.0
+ *
+ * @formatter:off
  */
 
 package com.jameswilliamson.teamlead;
