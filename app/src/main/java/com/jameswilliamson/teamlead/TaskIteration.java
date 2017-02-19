@@ -60,6 +60,7 @@ public class TaskIteration
         {
             m_StartTimestampMs = SystemClock.elapsedRealtime();
             m_Active = true;
+            m_Task.setAsActive();
         }
         else
         {
@@ -85,6 +86,7 @@ public class TaskIteration
             // Add the time spent on the task to the running total
             m_TotalRuntimeMs = ( SystemClock.elapsedRealtime() - m_StartTimestampMs );
             m_Active = false;
+            m_Task.setAsInactive();
         }
         else
         {

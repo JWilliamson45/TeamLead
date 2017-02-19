@@ -4,5 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="brightRed">#E22006</color>
-    <color name="contextSwitchButtonBlue">#4886CE</color>
+    <color name="taskButtonInactiveBackground">#4886CE</color>
+    <color name="taskButtonActiveBackground">#194E8C</color>
+    <color name="taskButtonText">#E2EDFF</color>
 </resources>

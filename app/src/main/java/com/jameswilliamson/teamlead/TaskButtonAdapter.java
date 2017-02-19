@@ -12,6 +12,8 @@
 package com.jameswilliamson.teamlead;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,6 +94,7 @@ public class TaskButtonAdapter extends BaseAdapter
     public View getView( int position, View convertView, ViewGroup parent )
     {
         Button taskButton;
+        int buttonColor;
 
         if( convertView == null )
         {
@@ -105,8 +108,34 @@ public class TaskButtonAdapter extends BaseAdapter
             taskButton = (Button)convertView;
         }
 
-        // Update the button text, since the time value can change
-        taskButton.setText( m_Workday.getTaskName( position ) + "\n\n" + m_Workday.getTaskRuntime( position ) );
+        if( m_Workday.getTaskName( position ).equals( m_Workday.ADD_TASK_LABEL ) )
+        {
+            /**
+             * The "add new" task should be drawn a bit differently since it performs a special function and
+             * there is no timer.
+             */
+            taskButton.setText( m_Workday.getTaskName( position ) );
+            buttonColor = Color.LTGRAY;
+        }
+        else
+        {
+            // Update the button text, since the time value can change
+            taskButton.setText( m_Workday.getTaskName( position ) + "\n\n" + m_Workday.getTaskRuntime( position ) );
+
+            if( m_Workday.getTask( position ).isActive() )
+            {
+                // User task button is selected; paint it a little darker
+                buttonColor = ContextCompat.getColor( m_Context, R.color.taskButtonActiveBackground );
+            }
+            else
+            {
+                // User task button is not selected
+                buttonColor = ContextCompat.getColor( m_Context, R.color.taskButtonInactiveBackground );
+            }
+        }
+
+        // Update the button's color
+        taskButton.setBackgroundColor( buttonColor );
 
         return( taskButton );
     }

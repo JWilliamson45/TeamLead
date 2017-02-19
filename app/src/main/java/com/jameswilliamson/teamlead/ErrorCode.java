@@ -17,7 +17,8 @@ public enum ErrorCode
     ERR_NONE( 0, "No error" ),
     ERR_TASK_ALREADY_STARTED( 1, "The selected task is already started" ),
     ERR_TASK_ALREADY_STOPPED( 2, "The selected task is already stopped" ),
-    ERR_TASK_INVALID( 3, "The specified task is invalid" );
+    ERR_TASK_INVALID( 3, "The specified task is invalid" ),
+    ERR_TASK_DUPLICATE( 4, "The specified task has already been created" );
 
     // Enumeration constants
     private final int m_errCode;

@@ -24,8 +24,8 @@ import java.util.TimerTask;
 public class ContextSwitchActivity extends AppCompatActivity
 {
     // Private member fields
-    private Workday m_Workday;                 // Models a user's workday
-    private GridView m_Grid;                   // The grid of buttons displayed to the user
+    private Workday m_UserWorkday;             // The user workday model to depict on screen
+    private GridView m_TaskGrid;               // The grid of buttons (tasks) displayed to the user
     private Timer m_ScreenUpdateTimer;         // A timer used to repaint the screen
     private TaskButtonAdapter m_GridAdapter;   // The adapter used with the GridView
 
@@ -37,26 +37,21 @@ public class ContextSwitchActivity extends AppCompatActivity
     @Override
     protected void onCreate( Bundle savedInstanceState )
     {
+        // Call superclass implementation first
         super.onCreate( savedInstanceState );
+
+        // Inflate layout
         setContentView( R.layout.activity_context_switch );
 
         // Initialization of members
-        // TODO: 2/13/2017 The workday is erased when screen orientation is flipped; this cannot happen in final product
-        m_Workday = new Workday();
-        m_Grid = (GridView)findViewById( R.id.context_switch_grid );
+        m_UserWorkday = ( (TeamLeadApplication)getApplication() ).getWorkdayModel();
+        m_TaskGrid = (GridView)findViewById( R.id.context_switch_grid );
         m_ScreenUpdateTimer = new Timer();
-        m_GridAdapter = new TaskButtonAdapter( this, m_Workday );
-
-        // Create sample tasks
-        m_Workday.addTask( new Task( "Code" ) );
-        m_Workday.addTask( new Task( "Design" ) );
-        m_Workday.addTask( new Task( "Test" ) );
-        m_Workday.addTask( new Task( "Plan" ) );
-        m_Workday.addTask( new Task( "Debug" ) );
+        m_GridAdapter = new TaskButtonAdapter( this, m_UserWorkday );
 
         // Set up adapter and listener, then begin timer that will repaint the view
-        m_Grid.setAdapter( m_GridAdapter );
-        m_Grid.setOnItemClickListener( new gridClickHandler() );
+        m_TaskGrid.setAdapter( m_GridAdapter );
+        m_TaskGrid.setOnItemClickListener( new gridClickHandler() );
         m_ScreenUpdateTimer.scheduleAtFixedRate( new ActivityTimerTask( this ), 0, 1000 );
     }
 
@@ -68,7 +63,7 @@ public class ContextSwitchActivity extends AppCompatActivity
         @Override
         public void onItemClick( AdapterView<?> parent, View view, int position, long id )
         {
-            m_Workday.contextSwitch( position );
+            m_UserWorkday.contextSwitch( position );
         }
     }
 
@@ -105,7 +100,7 @@ public class ContextSwitchActivity extends AppCompatActivity
         @Override
         public void run()
         {
-            m_Grid.invalidateViews();
+            m_TaskGrid.invalidateViews();
         }
     }
 }
