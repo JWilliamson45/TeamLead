@@ -14,41 +14,45 @@
 
 package com.jameswilliamson.teamlead;
 
-import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
-public class Workday implements Serializable
+public class Workday
 {
-    // Public constants
-    public static final String ADD_TASK_LABEL = "Add\n\n+";   // The label to be shown for the "add new" task button
+    /* Public constants */
+    public static final String ADD_TASK_LABEL = "Add";     /* The label to be shown for the "add new" task button */
+    public static final String END_WORKDAY_LABEL = "End";  /* The label to be shown for the "end workday" task button */
 
-    // Private constants
-    private final String TIMER_FIELD_FORMAT = "00";           // Format used for presenting task time to the user
-    private final int MS_PER_SEC = 1000;                      // Conversion constant for seconds <-> milliseconds
-    private final int SEC_PER_MIN = 60;                       // Conversion constant for seconds <-> minutes
-    private final int MIN_PER_HOUR = 60;                      // Conversion constant for minutes <-> hours
+    /* Private constants */
+    private static final String TIMER_FIELD_FORMAT = "00"; /* Format used for presenting task time to the user */
+    private static final int MS_PER_SEC = 1000;            /* Conversion constant for seconds <-> milliseconds */
+    private static final int SEC_PER_MIN = 60;             /* Conversion constant for seconds <-> minutes */
+    private static final int MIN_PER_HOUR = 60;            /* Conversion constant for minutes <-> hours */
+    private static final int NUM_SPECIAL_TASKS = 2;        /* The number of "special tasks" in the Workday */
 
-    // Private member fields
-    private ArrayList<Task> m_Tasks;                   // A set of all m_Tasks created by the user
-    private ArrayDeque<TaskIteration> m_TaskLog;       // A sequence of task iterations that compose the entire workday
-    private TaskIteration m_ActiveIteration;           // The currently active task iteration
-    private DecimalFormat m_TimeFormatter;             // Formats task time for presentation to the user
+    /* Private member fields */
+    private ArrayList<Task> m_Tasks;                       /* A set of all m_Tasks created by the user */
+    private ArrayDeque<TaskIteration> m_TaskLog;           /* Sequence of task iterations that constitute the workday */
+    private TaskIteration m_ActiveIteration;               /* The currently active task iteration */
+    private DecimalFormat m_TimeFormatter;                 /* Formats task time for presentation to the user */
 
     /**
      * Constructs the Workday object.
      */
-    public Workday()
+    Workday()
     {
-        // Initialize members
-        m_Tasks = new ArrayList<Task>();
-        m_TaskLog = new ArrayDeque<TaskIteration>();
+        /* Initialize members */
+        m_Tasks = new ArrayList<>();
+        m_TaskLog = new ArrayDeque<>();
         m_ActiveIteration = null;
         m_TimeFormatter = new DecimalFormat( TIMER_FIELD_FORMAT );
 
-        // Create the "add new" task; a special type of task that is only used to define a new custom user task
+        /* Create the "add new" task; a special type of task that is only used to define a new custom user task */
         m_Tasks.add( new Task( ADD_TASK_LABEL ) );
+
+        /* Create the "end workday" task; a special type of task used to end the workday and generate output */
+        m_Tasks.add( new Task( END_WORKDAY_LABEL ) );
     }
 
     /**
@@ -57,14 +61,17 @@ public class Workday implements Serializable
      * @param newTask A new task to be performed
      * @return An error code indicative of success or failure
      */
-    public ErrorCode addTask( Task newTask )
+    ErrorCode addTask( Task newTask )
     {
         ErrorCode taskErr = ErrorCode.ERR_NONE;
 
         if( m_Tasks.contains( newTask ) == false )
         {
-            // Add the new task to the second to last index; the "add new" task should always be last
-            m_Tasks.add( m_Tasks.size() - 1, newTask );
+            /*
+             * Add the new task to the list of user-defined tasks, but rather than inserting them at the very end of
+             * the list, insert them before the "special tasks" so that they are shown last on the UI.
+             */
+            m_Tasks.add( m_Tasks.size() - NUM_SPECIAL_TASKS, newTask );
         }
         else
         {
@@ -81,8 +88,7 @@ public class Workday implements Serializable
      */
     public int getNumberOfUserTasks()
     {
-        // TODO: 2/18/2017 Consider adding a "user-defined" field to the Task to make this scalable
-        return( m_Tasks.size() - 1 );
+        return( m_Tasks.size() - NUM_SPECIAL_TASKS );
     }
 
     /**
@@ -90,7 +96,7 @@ public class Workday implements Serializable
      * 
      * @return The number of all tasks in the Workday
      */
-    public int getNumberOfTasks()
+    int getNumberOfTasks()
     {
         return( m_Tasks.size() );
     }
@@ -101,7 +107,7 @@ public class Workday implements Serializable
      * @param taskIndex The index of the task
      * @return The name of the task
      */
-    public String getTaskName( int taskIndex )
+    String getTaskName( int taskIndex )
     {
         String taskName = "n/a";
 
@@ -119,7 +125,7 @@ public class Workday implements Serializable
      * @param taskIndex The index of the task
      * @return The specified task
      */
-    public Task getTask( int taskIndex )
+    Task getTask( int taskIndex )
     {
         Task task = null;
 
@@ -138,11 +144,12 @@ public class Workday implements Serializable
      * @param newTaskIndex The index of the task to begin
      * @return An error code indicative of success or failure
      */
-    public ErrorCode contextSwitch( int newTaskIndex )
+    ErrorCode contextSwitch( int newTaskIndex )
     {
         ErrorCode taskErr = ErrorCode.ERR_NONE;
 
-        if( newTaskIndex < ( m_Tasks.size() - 1 ) )
+        /* Cannot perform context switch to a special task */
+        if( newTaskIndex < ( m_Tasks.size() - NUM_SPECIAL_TASKS ) )
         {
             endTask();
             beginTask( newTaskIndex );
@@ -158,11 +165,14 @@ public class Workday implements Serializable
     /**
      * Ends the workday, which stops the active task and creates visual output for analysis of the time spent.
      */
-    public void endWorkday()
+    void endWorkday()
     {
         endTask();
 
-        // TODO: 2/12/2017 Add feature that creates a graph using the task log.
+        /*
+         * TODO: 2/12/2017 Add feature that creates a graph using the task log. Might also need to do clear/save
+         *                 operations as well.
+         */
     }
 
     /**
@@ -171,36 +181,36 @@ public class Workday implements Serializable
      * @param taskIndex The index of the task to query
      * @return The total amount of time spent performing the task, in UI-friendly hh:mm:ss format
      */
-    public String getTaskRuntime( int taskIndex )
+    String getTaskRuntime( int taskIndex )
     {
         String timeSpent = "00:00:00";
 
-        // Boundary check
+        /* Boundary check */
         if( taskIndex < m_Tasks.size() )
         {
-            // If no task is active, cannot return an elapsed time
+            /* If no task is active, cannot return an elapsed time */
             if( m_ActiveIteration != null )
             {
-                // Get the task associated with the index and query the runtime
+                /* Get the task associated with the index and query the runtime */
                 Task task = m_Tasks.get( taskIndex );
                 long taskRuntimeMs = task.getRuntimeMs();
 
                 if( m_ActiveIteration.getTask().equals( task ) )
                 {
-                    // The task being queried is currently active, so add the up-to-date time to the total
+                    /* The task being queried is currently active, so add the up-to-date time to the total */
                     taskRuntimeMs += m_ActiveIteration.getRuntimeMs();
                 }
 
-                // Convert total millisecond task time to hours, minutes, and seconds
+                /* Convert total millisecond task time to hours, minutes, and seconds */
                 int seconds = (int)( taskRuntimeMs / MS_PER_SEC );
                 int minutes = ( seconds / SEC_PER_MIN );
                 int hours = ( minutes / MIN_PER_HOUR );
 
-                // Adjust for remainder so that hh:mm:ss reported to user is cohesive
+                /* Adjust for remainder so that hh:mm:ss reported to user is cohesive */
                 seconds = ( seconds % SEC_PER_MIN );
                 minutes = ( minutes % MIN_PER_HOUR );
 
-                // Build string and return to user
+                /* Build string and return to user */
                 timeSpent = m_TimeFormatter.format( hours );
                 timeSpent = timeSpent.concat( ":" );
                 timeSpent = timeSpent.concat( m_TimeFormatter.format( minutes ) );
@@ -219,10 +229,10 @@ public class Workday implements Serializable
      */
     private void beginTask( int taskIndex )
     {
-        // Create a new iteration of the task and mark it as active
+        /* Create a new iteration of the task and mark it as active */
         m_ActiveIteration = new TaskIteration( m_Tasks.get( taskIndex ) );
 
-        // Begin tracking time spent on the task
+        /* Begin tracking time spent on the task */
         m_ActiveIteration.start();
     }
 
@@ -233,14 +243,14 @@ public class Workday implements Serializable
     {
         if( m_ActiveIteration != null )
         {
-            // Stop the iteration
+            /* Stop the iteration */
             m_ActiveIteration.end();
 
-            // Add the iteration's runtime to the task's running total
+            /* Add the iteration's runtime to the task's running total */
             long iterationRuntimeMs = m_ActiveIteration.getRuntimeMs();
             m_ActiveIteration.getTask().addRuntimeMs( iterationRuntimeMs );
 
-            // Add the stopped active iteration to the queue
+            /* Add the stopped active iteration to the queue */
             m_TaskLog.add( m_ActiveIteration );
         }
     }

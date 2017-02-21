@@ -12,7 +12,7 @@
 package com.jameswilliamson.teamlead;
 
 
-public enum ErrorCode
+enum ErrorCode
 {
     ERR_NONE( 0, "No error" ),
     ERR_TASK_ALREADY_STARTED( 1, "The selected task is already started" ),
@@ -20,7 +20,7 @@ public enum ErrorCode
     ERR_TASK_INVALID( 3, "The specified task is invalid" ),
     ERR_TASK_DUPLICATE( 4, "The specified task has already been created" );
 
-    // Enumeration constants
+    /* Enumeration constants */
     private final int m_errCode;
     private final String m_Description;
 

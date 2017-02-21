@@ -13,8 +13,10 @@
 package com.jameswilliamson.teamlead;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -23,11 +25,10 @@ import java.util.TimerTask;
 
 public class ContextSwitchActivity extends AppCompatActivity
 {
-    // Private member fields
-    private Workday m_UserWorkday;             // The user workday model to depict on screen
-    private GridView m_TaskGrid;               // The grid of buttons (tasks) displayed to the user
-    private Timer m_ScreenUpdateTimer;         // A timer used to repaint the screen
-    private TaskButtonAdapter m_GridAdapter;   // The adapter used with the GridView
+    /* Private member fields */
+    private Workday m_UserWorkday;             /* The user workday model to depict on screen */
+    private GridView m_TaskGrid;               /* The grid of buttons (tasks) displayed to the user */
+    private Activity m_ThisActivity;           /* A reference to this activity */
 
     /**
      * Called when the activity is created - initialization for the activity is performed here.
@@ -37,21 +38,31 @@ public class ContextSwitchActivity extends AppCompatActivity
     @Override
     protected void onCreate( Bundle savedInstanceState )
     {
-        // Call superclass implementation first
+        /* Call superclass implementation first */
         super.onCreate( savedInstanceState );
 
-        // Inflate layout
+        /* Inflate layout */
         setContentView( R.layout.activity_context_switch );
 
-        // Initialization of members
-        m_UserWorkday = ( (TeamLeadApplication)getApplication() ).getWorkdayModel();
-        m_TaskGrid = (GridView)findViewById( R.id.context_switch_grid );
-        m_ScreenUpdateTimer = new Timer();
-        m_GridAdapter = new TaskButtonAdapter( this, m_UserWorkday );
+        /* Set up toolbar */
+        Toolbar m_Toolbar = (Toolbar)findViewById( R.id.context_switch_toolbar );
+        m_Toolbar.setTitle( R.string.context_switch_activity_title );
+        setSupportActionBar( m_Toolbar );
 
-        // Set up adapter and listener, then begin timer that will repaint the view
+        /* Initialization of members */
+        m_UserWorkday = ( ( TeamLeadApplication)getApplication() ).getWorkdayModel();
+        m_TaskGrid = (GridView)findViewById( R.id.context_switch_grid );
+        m_ThisActivity = this;
+
+        /* Set up the grid adapter */
+        TaskButtonAdapter m_GridAdapter = new TaskButtonAdapter( this, m_UserWorkday );
         m_TaskGrid.setAdapter( m_GridAdapter );
+
+        /* Assign listeners */
         m_TaskGrid.setOnItemClickListener( new gridClickHandler() );
+
+        /* Set up the timer that will repaint the view */
+        Timer m_ScreenUpdateTimer = new Timer();
         m_ScreenUpdateTimer.scheduleAtFixedRate( new ActivityTimerTask( this ), 0, 1000 );
     }
 
@@ -63,7 +74,23 @@ public class ContextSwitchActivity extends AppCompatActivity
         @Override
         public void onItemClick( AdapterView<?> parent, View view, int position, long id )
         {
-            m_UserWorkday.contextSwitch( position );
+            if( m_UserWorkday.getTaskName( position ).equals( Workday.ADD_TASK_LABEL ) )
+            {
+                /* Launch new activity to gather user input for the new task */
+                startActivity( new Intent( m_ThisActivity, AddNewTaskActivity.class ) );
+            }
+            else if( m_UserWorkday.getTaskName( position ).equals( Workday.END_WORKDAY_LABEL ) )
+            {
+                m_UserWorkday.endWorkday();
+            }
+            else
+            {
+                /* Normal user task; context switch to whatever task has been selected */
+                m_UserWorkday.contextSwitch( position );
+
+                /* Force a repaint */
+                m_TaskGrid.invalidateViews();
+            }
         }
     }
 
@@ -72,7 +99,7 @@ public class ContextSwitchActivity extends AppCompatActivity
      */
     private class ActivityTimerTask extends TimerTask
     {
-        // Private member fields
+        /* Private member fields */
         private Activity m_Activity;
 
         /**
@@ -80,11 +107,14 @@ public class ContextSwitchActivity extends AppCompatActivity
          *
          * @param activity A reference to the associated activity
          */
-        public ActivityTimerTask( Activity activity )
+        private ActivityTimerTask( Activity activity )
         {
             m_Activity = activity;
         }
 
+        /**
+         * Executes the grid refresh task on the UI thread.
+         */
         @Override
         public void run()
         {
@@ -97,6 +127,9 @@ public class ContextSwitchActivity extends AppCompatActivity
      */
     private class GridRefresher implements Runnable
     {
+        /**
+         * Runs the task that forces a repaint on the UI grid.
+         */
         @Override
         public void run()
         {

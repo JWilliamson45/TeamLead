@@ -11,9 +11,19 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/context_switch_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/context_switch_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/Theme.AppCompat"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
     <GridView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -22,12 +32,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
-        android:numColumns="4"
+        android:layout_below="@id/context_switch_toolbar"
+        android:numColumns="3"
         android:verticalSpacing="8dp"
         android:horizontalSpacing="8dp"
         android:stretchMode="columnWidth"
         android:gravity="center"
-        tools:context="com.jameswilliamson.teamlead.ContextSwitchActivity" />
+        tools:context="com.jameswilliamson.teamlead.ContextSwitchActivity"/>
 
 </RelativeLayout>
 

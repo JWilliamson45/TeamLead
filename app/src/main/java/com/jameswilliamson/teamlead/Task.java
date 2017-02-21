@@ -12,19 +12,22 @@
 package com.jameswilliamson.teamlead;
 
 
-public class Task
+class Task
 {
-    // Private member fields
-    private String m_TaskName;                         // The name of the task
-    private boolean m_TaskActive;                      // Marks whether or not this task is currently active
-    private long m_TotalTaskRuntimeMs;                 // Total time spent on all previous iterations of the task
+    /* Public constants */
+    static final int TASK_NAME_CHARS_MAX = 8;          /* The maximum allowable length of a task name */
+
+    /* Private member fields */
+    private String m_TaskName;                         /* The name of the task */
+    private boolean m_TaskActive;                      /* Marks whether or not this task is currently active */
+    private long m_TotalTaskRuntimeMs;                 /* Total time spent on all previous iterations of the task */
 
     /**
      * Constructs a new task and gives it a name.
      *
      * @param taskName The name of the task
      */
-    public Task( String taskName )
+    Task( String taskName )
     {
         m_TaskName = taskName;
         m_TaskActive = false;
@@ -34,7 +37,7 @@ public class Task
     /**
      * Sets a new name for the task.
      *
-     * @return The new name for the task
+     * @param taskName The new name for the task
      */
     public void setTaskName( String taskName )
     {
@@ -46,7 +49,7 @@ public class Task
      *
      * @return The name of the task
      */
-    public String getTaskName()
+    String getTaskName()
     {
         return( m_TaskName );
     }
@@ -54,7 +57,7 @@ public class Task
     /**
      * Marks the task as currently active.
      */
-    public void setAsActive()
+    void setAsActive()
     {
         m_TaskActive = true;
     }
@@ -62,7 +65,7 @@ public class Task
     /**
      * Marks the task as currently inactive.
      */
-    public void setAsInactive()
+    void setAsInactive()
     {
         m_TaskActive = false;
     }
@@ -72,7 +75,7 @@ public class Task
      *
      * @return True if the task is active, false otherwise
      */
-    public boolean isActive()
+    boolean isActive()
     {
         return( m_TaskActive );
     }
@@ -82,7 +85,7 @@ public class Task
      *
      * @param runtimeMs The amount of runtime to add to the task, in milliseconds
      */
-    public void addRuntimeMs( long runtimeMs )
+    void addRuntimeMs( long runtimeMs )
     {
         m_TotalTaskRuntimeMs += runtimeMs;
     }
@@ -92,7 +95,7 @@ public class Task
      *
      * @return The runtime of all previous iterations of the task, in milliseconds
      */
-    public long getRuntimeMs()
+    long getRuntimeMs()
     {
         return( m_TotalTaskRuntimeMs );
     }
@@ -134,7 +137,7 @@ public class Task
     {
         int result = 716;
 
-        // Factor in task's name (the string hash code)
+        /* Factor in task's name (the string hash code) */
         result = 37 * result + m_TaskName.hashCode();
 
         return( result );

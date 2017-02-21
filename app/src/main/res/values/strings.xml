@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">TeamLead</string>
+
+    <!-- Toolbar titles -->
+    <string name="context_switch_activity_title">ContextSwitch</string>
+
+    <!-- AddNewTaskActivity -->
+    <string name="add_new_task_activity_title">Create Task</string>
+    <string name="add_button_label">Add</string>
+    <string name="ok_button_label">OK</string>
+    <string name="invalid_task_dialog_title">Invalid Task Name</string>
+    <string name="invalid_task_name_dialog_msg_prefix">A task name cannot be longer than</string>
+    <string name="invalid_task_name_dialog_msg_postfix">characters.</string>
 </resources>

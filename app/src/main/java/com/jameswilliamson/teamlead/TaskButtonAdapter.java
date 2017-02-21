@@ -21,11 +21,11 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 
 
-public class TaskButtonAdapter extends BaseAdapter
+class TaskButtonAdapter extends BaseAdapter
 {
-    // Private member fields
-    private Workday m_Workday;                         // Contains the list of tasks to be displayed on the GUI
-    private Context m_Context;                         // The associated context
+    /* Private member fields */
+    private Workday m_Workday;                         /* Contains the list of tasks to be displayed on the GUI */
+    private Context m_Context;                         /* The associated context */
 
     /**
      * Constructs the task button adapter.
@@ -33,7 +33,7 @@ public class TaskButtonAdapter extends BaseAdapter
      * @param c The application context
      * @param workday The Workday object that contains the list of tasks to be displayed on the GridView
      */
-    public TaskButtonAdapter( Context c, Workday workday )
+    TaskButtonAdapter( Context c, Workday workday )
     {
         m_Context = c;
         this.m_Workday = workday;
@@ -98,7 +98,7 @@ public class TaskButtonAdapter extends BaseAdapter
 
         if( convertView == null )
         {
-            // Cannot reuse view, so inflate it from XML
+            /* Cannot reuse view, so inflate it from XML */
             LayoutInflater inflater = (LayoutInflater)m_Context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
             View view = inflater.inflate( R.layout.task_button, null );
             taskButton = (Button)view.findViewById( R.id.task_button );
@@ -108,33 +108,42 @@ public class TaskButtonAdapter extends BaseAdapter
             taskButton = (Button)convertView;
         }
 
-        if( m_Workday.getTaskName( position ).equals( m_Workday.ADD_TASK_LABEL ) )
+        if( m_Workday.getTaskName( position ).equals( Workday.ADD_TASK_LABEL ) )
         {
-            /**
+            /*
              * The "add new" task should be drawn a bit differently since it performs a special function and
              * there is no timer.
              */
-            taskButton.setText( m_Workday.getTaskName( position ) );
+            taskButton.setText( m_Workday.getTaskName( position ) + "\n\n+" );
+            buttonColor = Color.LTGRAY;
+        }
+        else if( m_Workday.getTaskName( position ).equals( Workday.END_WORKDAY_LABEL ) )
+        {
+            /*
+             * The "end workday" task should be drawn a bit differently since it performs a special function and
+             * there is no timer.
+             */
+            taskButton.setText( m_Workday.getTaskName( position ) + "\n\n" );
             buttonColor = Color.LTGRAY;
         }
         else
         {
-            // Update the button text, since the time value can change
+            /* Update the button text, since the time value can change */
             taskButton.setText( m_Workday.getTaskName( position ) + "\n\n" + m_Workday.getTaskRuntime( position ) );
 
             if( m_Workday.getTask( position ).isActive() )
             {
-                // User task button is selected; paint it a little darker
+                /* User task button is selected; paint it a little darker */
                 buttonColor = ContextCompat.getColor( m_Context, R.color.taskButtonActiveBackground );
             }
             else
             {
-                // User task button is not selected
+                /* User task button is not selected */
                 buttonColor = ContextCompat.getColor( m_Context, R.color.taskButtonInactiveBackground );
             }
         }
 
-        // Update the button's color
+        /* Update the button's color */
         taskButton.setBackgroundColor( buttonColor );
 
         return( taskButton );
