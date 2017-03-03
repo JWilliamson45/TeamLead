@@ -1,11 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    colors.xml
+
+    TeamLead application color definitions.
+
+    @author James Williamson
+    @version 0.2.0
+-->
+
 <resources>
     <color name="colorPrimary">#749CCC</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#7EAD7E</color>
     <color name="colorPrimaryText">#FFFFFF</color>
     <color name="brightRed">#E22006</color>
-    <color name="taskButtonInactiveBackground">#4886CE</color>
-    <color name="taskButtonActiveBackground">#194E8C</color>
+
+    <!-- Task button colors -->
+    <color name="taskButtonBlueInactive">#4886CE</color>
+    <color name="taskButtonBlueActive">#194E8C</color>
+    <color name="taskButtonGreenInactive">#33964A</color>
+    <color name="taskButtonGreenActive">#155123</color>
+    <color name="taskButtonRedInactive">#AD403C</color>
+    <color name="taskButtonRedActive">#772725</color>
+    <color name="taskButtonYellowInactive">#B7B040</color>
+    <color name="taskButtonYellowActive">#7C7725</color>
     <color name="taskButtonText">#E2EDFF</color>
 </resources>

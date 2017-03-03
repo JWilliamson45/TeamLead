@@ -25,7 +25,7 @@ class Task
     /**
      * Constructs a new task and gives it a name.
      *
-     * @param taskName The name of the task
+     * @param taskName The name of the task.
      */
     Task( String taskName )
     {
@@ -37,7 +37,7 @@ class Task
     /**
      * Sets a new name for the task.
      *
-     * @param taskName The new name for the task
+     * @param taskName The new name for the task.
      */
     public void setTaskName( String taskName )
     {
@@ -47,7 +47,7 @@ class Task
     /**
      * Returns the name of the task.
      *
-     * @return The name of the task
+     * @return The name of the task.
      */
     String getTaskName()
     {
@@ -73,7 +73,7 @@ class Task
     /**
      * Returns whether or not the task is active.
      *
-     * @return True if the task is active, false otherwise
+     * @return True if the task is active, false otherwise.
      */
     boolean isActive()
     {
@@ -83,7 +83,7 @@ class Task
     /**
      * Adds the given millisecond count to the total overall runtime of the task.
      *
-     * @param runtimeMs The amount of runtime to add to the task, in milliseconds
+     * @param runtimeMs The amount of runtime to add to the task, in milliseconds.
      */
     void addRuntimeMs( long runtimeMs )
     {
@@ -93,7 +93,7 @@ class Task
     /**
      * Returns the total runtime of all previous iterations of the task.
      *
-     * @return The runtime of all previous iterations of the task, in milliseconds
+     * @return The runtime of all previous iterations of the task, in milliseconds.
      */
     long getRuntimeMs()
     {
@@ -103,8 +103,8 @@ class Task
     /**
      * Determines if the Task is equal to another given Task.
      *
-     * @param obj The other object to test for equality
-     * @return True if the Tasks are equal, false otherwise
+     * @param obj The other object to test for equality.
+     * @return True if the Tasks are equal, false otherwise.
      */
     @Override
     public boolean equals( Object obj )
@@ -130,7 +130,7 @@ class Task
     /**
      * Returns the hash code of the Task object.
      *
-     * @return A hash code value for this object
+     * @return A hash code value for this object.
      */
     @Override
     public int hashCode()

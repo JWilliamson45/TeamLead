@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    preferences.xml
+
+    Stores user preferences for the TeamLead application.
+
+    @author James Williamson
+    @version 0.2.0
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:key="@string/pref_tile_color_key"
+        android:title="@string/pref_tile_color_title"
+        android:summary="@string/pref_tile_color_summary"
+        android:defaultValue="@string/pref_tile_color_blue"
+        android:enabled="true"
+        android:persistent="true"
+        android:entries="@array/Color"
+        android:entryValues="@array/ColorAlias"/>
+</PreferenceScreen>

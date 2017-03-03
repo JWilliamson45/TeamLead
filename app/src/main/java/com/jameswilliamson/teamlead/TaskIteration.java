@@ -26,7 +26,7 @@ class TaskIteration
     /**
      * Constructs the TaskIteration object.
      *
-     * @param task The task to which this iteration applies
+     * @param task The task to which this iteration applies.
      */
     TaskIteration( Task task )
     {
@@ -39,7 +39,7 @@ class TaskIteration
     /**
      * Get the task associated with this iteration.
      *
-     * @return The associated task
+     * @return The associated task.
      */
     public Task getTask()
     {
@@ -50,7 +50,7 @@ class TaskIteration
      * Marks the start of this iteration, and begins recording time spent doing the task. Since subsequent iterations
      * of the task are tracked separately, calling this function more than once will return an error.
      *
-     * @return An error code indicative of success or failure
+     * @return An error code indicative of success or failure.
      */
     ErrorCode start()
     {
@@ -78,7 +78,7 @@ class TaskIteration
      * Marks the end of this iteration, and stops recording time spent doing the task. Calling this function more than
      * once will return an error.
      *
-     * @return An error code indicative of success or failure
+     * @return An error code indicative of success or failure.
      */
     ErrorCode end()
     {
@@ -105,7 +105,7 @@ class TaskIteration
     /**
      * Returns the runtime of the current iteration of the task.
      *
-     * @return The current task runtime in milliseconds
+     * @return The current task runtime in milliseconds.
      */
     long getRuntimeMs()
     {

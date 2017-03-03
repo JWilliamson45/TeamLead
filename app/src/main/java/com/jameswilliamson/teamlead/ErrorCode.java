@@ -27,8 +27,8 @@ enum ErrorCode
     /**
      * Constructs the enum and assigns it the given code and description.
      *
-     * @param errCode The unique error code handle
-     * @param description A string description of the associated error
+     * @param errCode The unique error code handle.
+     * @param description A string description of the associated error.
      */
     ErrorCode( int errCode, String description )
     {
@@ -39,7 +39,7 @@ enum ErrorCode
     /**
      * Returns the string description of the associated error.
      *
-     * @return The error string description
+     * @return The error string description.
      */
     public String getDescription()
     {
@@ -49,7 +49,7 @@ enum ErrorCode
     /**
      * Returns the unique error code handle.
      *
-     * @return The error code handle
+     * @return The error code handle.
      */
     public int getCode()
     {
@@ -59,7 +59,7 @@ enum ErrorCode
     /**
      * Provides a string representation of the error enum.
      *
-     * @return A string containing the error code number and string description
+     * @return A string containing the error code number and string description.
      */
     @Override
     public String toString()

@@ -1,14 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    strings.xml
+
+    TeamLead application string definitions.
+
+    @author James Williamson
+    @version 0.2.0
+-->
+
 <resources>
     <string name="app_name">TeamLead</string>
 
-    <!-- Toolbar titles -->
-    <string name="context_switch_activity_title">ContextSwitch</string>
+    <!-- ContextSwitchActivity -->
+    <string name="context_switch_activity_title">TeamLead</string>
+    <string name="add_task_label">Add</string>
+    <string name="end_workday_label">End</string>
 
     <!-- AddNewTaskActivity -->
     <string name="add_new_task_activity_title">Create Task</string>
     <string name="add_button_label">Add</string>
     <string name="ok_button_label">OK</string>
     <string name="invalid_task_dialog_title">Invalid Task Name</string>
-    <string name="invalid_task_name_dialog_msg_prefix">A task name cannot be longer than</string>
-    <string name="invalid_task_name_dialog_msg_postfix">characters.</string>
+    <string name="invalid_task_name_zero_dialog_msg">You must enter a valid task name.</string>
+    <string name="invalid_task_name_length_dialog_msg">A task name cannot be longer than %1$d characters.</string>
+
+    <!-- SettingsActivity -->
+    <string name="settings_activity_title">Settings</string>
+    <string name="pref_tile_color_key">pref_taskTileColor</string>
+    <string name="pref_tile_color_title">Task Tile Color</string>
+    <string name="pref_tile_color_summary">Change the color of the task tiles"</string>
+    <string name="pref_tile_color_blue">Blue</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string-array name="Color">
+        <item>Blue</item>
+        <item>Green</item>
+        <item>Red</item>
+        <item>Yellow</item>
+    </string-array>
+
+    <string-array name="ColorAlias">
+        <item>"color-BLUE"</item>
+        <item>"color-GREEN"</item>
+        <item>"color-RED"</item>
+        <item>"color-YELLOW"</item>
+    </string-array>
+
+    <!-- Options menu -->
+    <string name="contextswitch_menu_settings_title">Settings</string>
+    <string name="contextswitch_menu_about_title">About</string>
+
+    <!-- UnsupportedFunctionDialog -->
+    <string name="invalid_function_dialog_title">Unsupported Function</string>
+    <string name="invalid_function_dialog_msg">This functionality is not supported in this version.</string>
 </resources>

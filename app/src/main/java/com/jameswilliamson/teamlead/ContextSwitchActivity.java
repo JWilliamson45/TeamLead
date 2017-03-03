@@ -17,6 +17,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -33,7 +36,7 @@ public class ContextSwitchActivity extends AppCompatActivity
     /**
      * Called when the activity is created - initialization for the activity is performed here.
      *
-     * @param savedInstanceState The saved instance state
+     * @param savedInstanceState The saved instance state.
      */
     @Override
     protected void onCreate( Bundle savedInstanceState )
@@ -67,6 +70,51 @@ public class ContextSwitchActivity extends AppCompatActivity
     }
 
     /**
+     * Initializes the content of the ContextSwitchActivity's standard options menu.
+     *
+     * @param menu The menu in which the items are shown.
+     * @return True if the menu is to be displayed, false otherwise.
+     */
+    @Override
+    public boolean onCreateOptionsMenu( Menu menu )
+    {
+        /* Inflate the menu from the resources file that includes the menu entries */
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate( R.menu.context_switch_menu, menu );
+
+        return( true );
+    }
+
+    /**
+     * Called whenever the ContextSwitchActivity's options menu is clicked by the user.
+     *
+     * @param item The selected menu item.
+     * @return False to allow normal menu processing to proceed, true to consume it here.
+     */
+    @Override
+    public boolean onOptionsItemSelected( MenuItem item )
+    {
+        boolean itemHandled = true;
+
+        // Handle item selection
+        switch( item.getItemId() )
+        {
+            case R.id.settings:
+                startActivity( new Intent( m_ThisActivity, SettingsActivity.class ) );
+                break;
+
+            case R.id.about:
+                break;
+
+            default:
+                itemHandled = super.onOptionsItemSelected( item );
+                break;
+        }
+
+        return( itemHandled );
+    }
+
+    /**
      * Private class for handling the user's button presses on the grid.
      */
     private class gridClickHandler implements AdapterView.OnItemClickListener
@@ -74,12 +122,12 @@ public class ContextSwitchActivity extends AppCompatActivity
         @Override
         public void onItemClick( AdapterView<?> parent, View view, int position, long id )
         {
-            if( m_UserWorkday.getTaskName( position ).equals( Workday.ADD_TASK_LABEL ) )
+            if( m_UserWorkday.getTaskName( position ).equals( getString( R.string.add_task_label ) ) )
             {
                 /* Launch new activity to gather user input for the new task */
                 startActivity( new Intent( m_ThisActivity, AddNewTaskActivity.class ) );
             }
-            else if( m_UserWorkday.getTaskName( position ).equals( Workday.END_WORKDAY_LABEL ) )
+            else if( m_UserWorkday.getTaskName( position ).equals( getString( R.string.end_workday_label ) ) )
             {
                 m_UserWorkday.endWorkday();
             }
@@ -105,7 +153,7 @@ public class ContextSwitchActivity extends AppCompatActivity
         /**
          * Constructs the ActivityTimerTask.
          *
-         * @param activity A reference to the associated activity
+         * @param activity A reference to the associated activity.
          */
         private ActivityTimerTask( Activity activity )
         {

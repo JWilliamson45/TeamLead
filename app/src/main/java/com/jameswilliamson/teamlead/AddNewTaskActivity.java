@@ -34,7 +34,7 @@ public class AddNewTaskActivity extends AppCompatActivity
     /**
      * Called when the activity is created - initialization for the activity is performed here.
      *
-     * @param savedInstanceState The saved instance state
+     * @param savedInstanceState The saved instance state.
      */
     @Override
     protected void onCreate( Bundle savedInstanceState )
@@ -74,10 +74,34 @@ public class AddNewTaskActivity extends AppCompatActivity
         @Override
         public void onClick( View v )
         {
-            if( m_AddTaskNameField.getText().length() > Task.TASK_NAME_CHARS_MAX )
+            int userTaskNameLength = m_AddTaskNameField.getText().length();
+
+            if( userTaskNameLength == 0 )
+            {
+                /* Don't allow tasks with empty string names */
+                String displayMsg = getResources().getString( R.string.invalid_task_name_zero_dialog_msg );
+
+                /* Pass message to error dialog and show it to the user */
+                Bundle dialogBundle = new Bundle();
+                dialogBundle.putString( "message", displayMsg );
+
+                InvalidTaskNameDialog invalidTaskDialog = new InvalidTaskNameDialog();
+                invalidTaskDialog.setArguments( dialogBundle );
+                invalidTaskDialog.show( m_ThisActivity.getFragmentManager(), InvalidTaskNameDialog.TAG );
+            }
+            else if( userTaskNameLength > Task.TASK_NAME_CHARS_MAX )
             {
                 /* Don't allow tasks with names longer than the allowable limit */
-                new InvalidTaskNameDialog().show( m_ThisActivity.getFragmentManager(), InvalidTaskNameDialog.TAG );
+                String displayMsg = String.format( getResources().getString(
+                        R.string.invalid_task_name_length_dialog_msg ), Task.TASK_NAME_CHARS_MAX );
+
+                /* Pass message to error dialog and show it to the user */
+                Bundle dialogBundle = new Bundle();
+                dialogBundle.putString( "message", displayMsg );
+
+                InvalidTaskNameDialog invalidTaskDialog = new InvalidTaskNameDialog();
+                invalidTaskDialog.setArguments( dialogBundle );
+                invalidTaskDialog.show( m_ThisActivity.getFragmentManager(), InvalidTaskNameDialog.TAG );
             }
             else
             {
@@ -114,11 +138,7 @@ public class AddNewTaskActivity extends AppCompatActivity
             builder.setTitle( R.string.invalid_task_dialog_title );
 
             /* The dialog body should convey why the task name is invalid */
-            String message = getResources().getString( R.string.invalid_task_name_dialog_msg_prefix ) +
-                    " " + Integer.toString( Task.TASK_NAME_CHARS_MAX ) + " " +
-                    getResources().getString( R.string.invalid_task_name_dialog_msg_postfix );
-
-            builder.setMessage( message );
+            builder.setMessage( getArguments().getString( "message" ) );
 
             /* Allows user to dismiss the dialog */
             builder.setPositiveButton( R.string.ok_button_label, new CloseDialogButtonListener() );

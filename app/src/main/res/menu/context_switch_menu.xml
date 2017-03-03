@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    context_switch_menu.xml
+
+    Menu specification for the ContextSwitchActivity.
+
+    @author James Williamson
+    @version 0.2.0
+-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/settings"
+          android:title="@string/contextswitch_menu_settings_title"/>
+    <item android:id="@+id/about"
+          android:title="@string/contextswitch_menu_about_title"/>
+</menu>

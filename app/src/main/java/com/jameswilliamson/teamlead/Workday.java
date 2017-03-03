@@ -14,16 +14,14 @@
 
 package com.jameswilliamson.teamlead;
 
+import android.content.Context;
+
 import java.text.DecimalFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public class Workday
 {
-    /* Public constants */
-    public static final String ADD_TASK_LABEL = "Add";     /* The label to be shown for the "add new" task button */
-    public static final String END_WORKDAY_LABEL = "End";  /* The label to be shown for the "end workday" task button */
-
     /* Private constants */
     private static final String TIMER_FIELD_FORMAT = "00"; /* Format used for presenting task time to the user */
     private static final int MS_PER_SEC = 1000;            /* Conversion constant for seconds <-> milliseconds */
@@ -32,6 +30,7 @@ public class Workday
     private static final int NUM_SPECIAL_TASKS = 2;        /* The number of "special tasks" in the Workday */
 
     /* Private member fields */
+    private Context m_Context;                             /* The associated application context */
     private ArrayList<Task> m_Tasks;                       /* A set of all m_Tasks created by the user */
     private ArrayDeque<TaskIteration> m_TaskLog;           /* Sequence of task iterations that constitute the workday */
     private TaskIteration m_ActiveIteration;               /* The currently active task iteration */
@@ -39,27 +38,30 @@ public class Workday
 
     /**
      * Constructs the Workday object.
+     *
+     * @param c The associated application context.
      */
-    Workday()
+    Workday( Context c )
     {
         /* Initialize members */
+        m_Context = c;
         m_Tasks = new ArrayList<>();
         m_TaskLog = new ArrayDeque<>();
         m_ActiveIteration = null;
         m_TimeFormatter = new DecimalFormat( TIMER_FIELD_FORMAT );
 
         /* Create the "add new" task; a special type of task that is only used to define a new custom user task */
-        m_Tasks.add( new Task( ADD_TASK_LABEL ) );
+        m_Tasks.add( new Task( m_Context.getString( R.string.add_task_label ) ) );
 
         /* Create the "end workday" task; a special type of task used to end the workday and generate output */
-        m_Tasks.add( new Task( END_WORKDAY_LABEL ) );
+        m_Tasks.add( new Task( m_Context.getString( R.string.end_workday_label ) ) );
     }
 
     /**
      * Adds a new task type that may be performed throughout the Workday.
      *
-     * @param newTask A new task to be performed
-     * @return An error code indicative of success or failure
+     * @param newTask A new task to be performed.
+     * @return An error code indicative of success or failure.
      */
     ErrorCode addTask( Task newTask )
     {
@@ -84,7 +86,7 @@ public class Workday
     /**
      * Returns the number of user-defined tasks that currently make up a Workday.
      *
-     * @return The number of user-defined tasks added to the Workday
+     * @return The number of user-defined tasks added to the Workday.
      */
     public int getNumberOfUserTasks()
     {
@@ -94,7 +96,7 @@ public class Workday
     /**
      * Returns the total number of tasks in the workday, including "special tasks," if applicable.
      * 
-     * @return The number of all tasks in the Workday
+     * @return The number of all tasks in the Workday.
      */
     int getNumberOfTasks()
     {
@@ -104,8 +106,8 @@ public class Workday
     /**
      * Returns the name of the task at the specified index.
      *
-     * @param taskIndex The index of the task
-     * @return The name of the task
+     * @param taskIndex The index of the task.
+     * @return The name of the task.
      */
     String getTaskName( int taskIndex )
     {
@@ -122,8 +124,8 @@ public class Workday
     /**
      * Returns the task at the specified index.
      *
-     * @param taskIndex The index of the task
-     * @return The specified task
+     * @param taskIndex The index of the task.
+     * @return The specified task.
      */
     Task getTask( int taskIndex )
     {
@@ -141,8 +143,8 @@ public class Workday
      * Starts performing a new task, specified by the given index. If a different task is currently being performed,
      * it is saved on the internal task log for later analysis, and the new task is marked as active.
      *
-     * @param newTaskIndex The index of the task to begin
-     * @return An error code indicative of success or failure
+     * @param newTaskIndex The index of the task to begin.
+     * @return An error code indicative of success or failure.
      */
     ErrorCode contextSwitch( int newTaskIndex )
     {
@@ -178,8 +180,8 @@ public class Workday
     /**
      * Returns the total amount of time spent performing the task, in "hh:mm:ss" format.
      *
-     * @param taskIndex The index of the task to query
-     * @return The total amount of time spent performing the task, in UI-friendly hh:mm:ss format
+     * @param taskIndex The index of the task to query.
+     * @return The total amount of time spent performing the task, in UI-friendly hh:mm:ss format.
      */
     String getTaskRuntime( int taskIndex )
     {
@@ -225,7 +227,7 @@ public class Workday
     /**
      * Begins performing the task identified by the given index.
      *
-     * @param taskIndex The index of the task to begin
+     * @param taskIndex The index of the task to begin.
      */
     private void beginTask( int taskIndex )
     {

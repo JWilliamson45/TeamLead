@@ -11,9 +11,9 @@
 
 package com.jameswilliamson.teamlead;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,24 +25,24 @@ class TaskButtonAdapter extends BaseAdapter
 {
     /* Private member fields */
     private Workday m_Workday;                         /* Contains the list of tasks to be displayed on the GUI */
-    private Context m_Context;                         /* The associated context */
+    private Activity m_Activity;                       /* The associated activity */
 
     /**
      * Constructs the task button adapter.
      *
-     * @param c The application context
-     * @param workday The Workday object that contains the list of tasks to be displayed on the GridView
+     * @param a The associated activity.
+     * @param workday The Workday object that contains the list of tasks to be displayed on the GridView.
      */
-    TaskButtonAdapter( Context c, Workday workday )
+    TaskButtonAdapter( Activity a, Workday workday )
     {
-        m_Context = c;
+        m_Activity = a;
         this.m_Workday = workday;
     }
 
     /**
      * Returns the number of items in the data set represented by this adapter.
      *
-     * @return The item count
+     * @return The item count.
      */
     @Override
     public int getCount()
@@ -53,8 +53,8 @@ class TaskButtonAdapter extends BaseAdapter
     /**
      * Returns the data item associated with the specified position in the data set.
      *
-     * @param position Position of the item whose data we want within the adapter's data set
-     * @return The data at the specified position
+     * @param position Position of the item whose data we want within the adapter's data set.
+     * @return The data at the specified position.
      */
     @Override
     public Object getItem( int position )
@@ -72,8 +72,8 @@ class TaskButtonAdapter extends BaseAdapter
     /**
      * Returns the row ID associated with the specified position in the list.
      *
-     * @param position The position of the item within the adapter's data set whose row ID we want
-     * @return The ID of the item at the specified position
+     * @param position The position of the item within the adapter's data set whose row ID we want.
+     * @return The ID of the item at the specified position.
      */
     @Override
     public long getItemId( int position )
@@ -85,10 +85,10 @@ class TaskButtonAdapter extends BaseAdapter
      * Returns the view that displays the data at the specified position in the data set. The view is inflated upon
      * first invocation from an XML file and populated with data from the associated Workday.
      *
-     * @param position The position of the item within the adapter's data set of the item whose view we want
-     * @param convertView The old view to reuse, if possible
-     * @param parent The parent that this view will eventually be attached to
-     * @return A View corresponding to the data at the specified position
+     * @param position The position of the item within the adapter's data set of the item whose view we want.
+     * @param convertView The old view to reuse, if possible.
+     * @param parent The parent that this view will eventually be attached to.
+     * @return A View corresponding to the data at the specified position.
      */
     @Override
     public View getView( int position, View convertView, ViewGroup parent )
@@ -99,7 +99,7 @@ class TaskButtonAdapter extends BaseAdapter
         if( convertView == null )
         {
             /* Cannot reuse view, so inflate it from XML */
-            LayoutInflater inflater = (LayoutInflater)m_Context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+            LayoutInflater inflater = (LayoutInflater)m_Activity.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
             View view = inflater.inflate( R.layout.task_button, null );
             taskButton = (Button)view.findViewById( R.id.task_button );
         }
@@ -108,7 +108,7 @@ class TaskButtonAdapter extends BaseAdapter
             taskButton = (Button)convertView;
         }
 
-        if( m_Workday.getTaskName( position ).equals( Workday.ADD_TASK_LABEL ) )
+        if( m_Workday.getTaskName( position ).equals( m_Activity.getString( R.string.add_task_label ) ) )
         {
             /*
              * The "add new" task should be drawn a bit differently since it performs a special function and
@@ -117,7 +117,7 @@ class TaskButtonAdapter extends BaseAdapter
             taskButton.setText( m_Workday.getTaskName( position ) + "\n\n+" );
             buttonColor = Color.LTGRAY;
         }
-        else if( m_Workday.getTaskName( position ).equals( Workday.END_WORKDAY_LABEL ) )
+        else if( m_Workday.getTaskName( position ).equals( m_Activity.getString( R.string.end_workday_label ) ) )
         {
             /*
              * The "end workday" task should be drawn a bit differently since it performs a special function and
@@ -134,12 +134,12 @@ class TaskButtonAdapter extends BaseAdapter
             if( m_Workday.getTask( position ).isActive() )
             {
                 /* User task button is selected; paint it a little darker */
-                buttonColor = ContextCompat.getColor( m_Context, R.color.taskButtonActiveBackground );
+                buttonColor = ( (TeamLeadApplication)m_Activity.getApplication() ).getTaskButtonActiveColor();
             }
             else
             {
                 /* User task button is not selected */
-                buttonColor = ContextCompat.getColor( m_Context, R.color.taskButtonInactiveBackground );
+                buttonColor = ( (TeamLeadApplication)m_Activity.getApplication() ).getTaskButtonInactiveColor();
             }
         }
 
