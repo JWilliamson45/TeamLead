@@ -22,6 +22,11 @@ import android.support.v7.widget.Toolbar;
 
 public class SettingsActivity extends AppCompatActivity
 {
+    /**
+     * Called when the activity is created - initialization for the activity is performed here.
+     *
+     * @param savedInstanceState The saved instance state.
+     */
     @Override
     protected void onCreate( Bundle savedInstanceState )
     {

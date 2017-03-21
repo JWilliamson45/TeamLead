@@ -130,6 +130,9 @@ public class ContextSwitchActivity extends AppCompatActivity
             else if( m_UserWorkday.getTaskName( position ).equals( getString( R.string.end_workday_label ) ) )
             {
                 m_UserWorkday.endWorkday();
+
+                /* Launch activity to summarize the workday for the user */
+                startActivity( new Intent( m_ThisActivity, WorkdaySummaryActivity.class ) );
             }
             else
             {

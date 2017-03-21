@@ -25,6 +25,9 @@
     <string name="invalid_task_name_zero_dialog_msg">You must enter a valid task name.</string>
     <string name="invalid_task_name_length_dialog_msg">A task name cannot be longer than %1$d characters.</string>
 
+    <!-- WorkdaySummaryActiity -->
+    <string name="workday_summary_activity_title">Workday Summary</string>
+
     <!-- SettingsActivity -->
     <string name="settings_activity_title">Settings</string>
     <string name="pref_tile_color_key">pref_taskTileColor</string>
