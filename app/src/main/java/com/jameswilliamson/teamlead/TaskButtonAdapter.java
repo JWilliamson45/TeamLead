@@ -4,7 +4,7 @@
  * Adapter that is used to inflate and update button views that populate the ContextSwitch GridView.
  *
  * @author James Williamson
- * @version 0.2.0
+ * @version 0.3.0
  *
  * @formatter:off
  */

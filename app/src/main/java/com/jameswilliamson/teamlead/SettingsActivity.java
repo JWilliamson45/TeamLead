@@ -4,7 +4,7 @@
  * Android activity for the settings screen, which displays configurable user preferences for the application.
  *
  * @author James Williamson
- * @version 0.2.0
+ * @version 0.3.0
  *
  * @formatter:off
  */

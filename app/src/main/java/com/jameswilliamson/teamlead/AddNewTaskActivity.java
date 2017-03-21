@@ -5,7 +5,7 @@
  * added to the ContextSwitch activity and tracked.
  *
  * @author James Williamson
- * @version 0.2.0
+ * @version 0.3.0
  *
  * @formatter:off
  */

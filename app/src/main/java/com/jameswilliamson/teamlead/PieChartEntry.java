@@ -4,7 +4,7 @@
  * Models a single item that can be inserted to a PieChart view.
  *
  * @author James Williamson
- * @version 0.2.0
+ * @version 0.3.0
  *
  * @formatter:off
  */

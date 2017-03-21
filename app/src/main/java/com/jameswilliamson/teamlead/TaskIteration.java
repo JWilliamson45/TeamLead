@@ -5,7 +5,7 @@
  * may have many iterations performed over the course of a workday, which may be contiguous or scattered.
  *
  * @author James Williamson
- * @version 0.2.0
+ * @version 0.3.0
  *
  * @formatter:off
  */
