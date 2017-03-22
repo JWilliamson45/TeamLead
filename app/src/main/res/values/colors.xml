@@ -26,4 +26,49 @@
     <color name="taskButtonYellowInactive">#B7B040</color>
     <color name="taskButtonYellowActive">#7C7725</color>
     <color name="taskButtonText">#E2EDFF</color>
+
+    <!-- Pie chart colors -->
+    <color name="pie_chart_blue_1">#44659B</color>
+    <color name="pie_chart_green_1">#73CE79</color>
+    <color name="pie_chart_red_1">#9B5144</color>
+    <color name="pie_chart_yellow_1">#CCCE73</color>
+    <color name="pie_chart_purple_1">#6C449B</color>
+    <color name="pie_chart_orange_1">#E0A85E</color>
+    <color name="pie_chart_brown_1">#664112</color>
+    <color name="pie_chart_gray_1">#776B5B</color>
+    <color name="pie_chart_blue_2">#7396CE</color>
+    <color name="pie_chart_green_2">#449B4D</color>
+    <color name="pie_chart_red_2">#CE737A</color>
+    <color name="pie_chart_yellow_2">#9B9644</color>
+    <color name="pie_chart_purple_2">#CE73C1</color>
+    <color name="pie_chart_orange_2">#A57230</color>
+    <color name="pie_chart_brown_2">#996523</color>
+    <color name="pie_chart_gray_2">#AfA08C</color>
+    <color name="pie_chart_blue_3">#8DCAE0</color>
+    <color name="pie_chart_green_3">#8DE0AE</color>
+    <color name="pie_chart_red_3">#DB7A99</color>
+    <color name="pie_chart_yellow_3">#F2ED6D</color>
+
+    <array name="pie_chart_colors">
+        <item>@color/pie_chart_blue_1</item>
+        <item>@color/pie_chart_green_1</item>
+        <item>@color/pie_chart_red_1</item>
+        <item>@color/pie_chart_yellow_1</item>
+        <item>@color/pie_chart_purple_1</item>
+        <item>@color/pie_chart_orange_1</item>
+        <item>@color/pie_chart_brown_1</item>
+        <item>@color/pie_chart_gray_1</item>
+        <item>@color/pie_chart_blue_2</item>
+        <item>@color/pie_chart_green_2</item>
+        <item>@color/pie_chart_red_2</item>
+        <item>@color/pie_chart_yellow_2</item>
+        <item>@color/pie_chart_purple_2</item>
+        <item>@color/pie_chart_orange_2</item>
+        <item>@color/pie_chart_brown_2</item>
+        <item>@color/pie_chart_gray_2</item>
+        <item>@color/pie_chart_blue_3</item>
+        <item>@color/pie_chart_green_3</item>
+        <item>@color/pie_chart_red_3</item>
+        <item>@color/pie_chart_yellow_3</item>
+    </array>
 </resources>

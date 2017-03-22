@@ -13,7 +13,6 @@ package com.jameswilliamson.teamlead;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.RectF;
@@ -32,22 +31,8 @@ public class PieChart extends View
     private Context m_Context;                               /* The associated context */
     private ArrayList<PieChartEntry> m_ChartEntries;         /* The data modeled by the chart */
     private Paint m_PaintBrush;                              /* Paint brush that draws the chart */
-    private Point m_ChartOrigin;                             /* The center of the chart, used for positioning */
     private RectF m_ChartClippingRegion;                     /* The region where the chart is actually drawn */
-
-    /* Colors used for drawing the pie chart segments */
-    private final int[] m_ChartColors =
-    {
-        // TODO: 3/20/2017 Should this be in XML instead?
-        Color.BLUE,
-        Color.RED,
-        Color.YELLOW,
-        Color.GREEN,
-        Color.MAGENTA,
-        Color.CYAN,
-        Color.GRAY,
-        Color.BLACK
-    };
+    private int[] m_ChartColors;                             /* Colors used for drawing the pie chart segments */
 
     /**
      * Constructs a new PieChart view.
@@ -60,8 +45,14 @@ public class PieChart extends View
         m_Context = context;
         m_ChartEntries = new ArrayList();
         m_PaintBrush = new Paint();
-        m_ChartOrigin = new Point();
         m_ChartClippingRegion = new RectF();
+
+        /* Customize paintbrush */
+        m_PaintBrush.setAntiAlias( true );
+        m_PaintBrush.setDither( true );
+
+        /* Read color list from resource file and use it to initialize array for painting the chart */
+        m_ChartColors = m_Context.getResources().getIntArray( R.array.pie_chart_colors );
 
         /* Apply minimum dimensions for the view */
         setMinimumWidth( CHART_MIN_WIDTH );
@@ -94,7 +85,7 @@ public class PieChart extends View
              * to add a final portion of the pie chart when rounding "noise" means the validation may fail and it
              * might not precisely fit.
              */
-            int freeChartPercentage = getFreePercentage();
+            float freeChartPercentage = getFreePercentage();
 
             if( freeChartPercentage > 0 )
             {
@@ -155,15 +146,13 @@ public class PieChart extends View
     @Override protected void onDraw( Canvas canvas )
     {
         /* Running total of chart entry percentages used to draw multiple pie chart segments */
-        int percentageTally = 0;
+        float percentageTally = 0.0f;
 
-        /* Determine the drawing rectangle, based on origin and set dimensions */
-        m_ChartOrigin.set( ( canvas.getWidth() / 2 ), ( canvas.getHeight() / 2 ) );
-
-        m_ChartClippingRegion.set( ( m_ChartOrigin.x - ( CHART_MIN_WIDTH / 2 ) ),
-                                   ( m_ChartOrigin.y - ( CHART_MIN_HEIGHT / 2 ) ),
-                                   ( m_ChartOrigin.x + ( CHART_MIN_WIDTH / 2 ) ),
-                                   ( m_ChartOrigin.y + ( CHART_MIN_HEIGHT / 2 ) ) );
+        /* Determine the drawing rectangle, based on center of canvas and configured pixel width and height */
+        m_ChartClippingRegion.set( ( ( canvas.getWidth() >> 1 ) - ( CHART_MIN_WIDTH >> 1 ) ),
+                                   ( ( canvas.getHeight() >> 1 ) - ( CHART_MIN_HEIGHT >> 1 ) ),
+                                   ( ( canvas.getWidth() >> 1 ) + ( CHART_MIN_WIDTH >> 1 ) ),
+                                   ( ( canvas.getHeight() >> 1 ) + ( CHART_MIN_HEIGHT >> 1 ) ) );
 
         /* Draw the segments of the chart */
         for( PieChartEntry entry : m_ChartEntries )
@@ -172,8 +161,8 @@ public class PieChart extends View
             m_PaintBrush.setColor( m_ChartColors[entry.getId()] );
 
             /* Determine the start and end (sweep) angles for the arc that will be drawn */
-            float startAngle = (float)convertPercentageToDegrees( percentageTally );
-            float sweepAngle = (float)convertPercentageToDegrees( entry.getPercentage() );
+            float startAngle = convertPercentageToDegrees( percentageTally );
+            float sweepAngle = convertPercentageToDegrees( entry.getPercentage() );
 
             /* Draw the arc (the "true" argument implies that a filled wedge is actually what is drawn) */
             canvas.drawArc( m_ChartClippingRegion, startAngle, sweepAngle, true, m_PaintBrush );
@@ -192,7 +181,7 @@ public class PieChart extends View
      * @param angle The angle, in radians, of the line to the point.
      * @return The calculated point on the circumference.
      */
-    private Point getPointOnCircle( Point origin, int radius, double angle )
+    private Point getPointOnCircle( Point origin, float radius, double angle )
     {
         Point p = new Point();
 
@@ -211,7 +200,7 @@ public class PieChart extends View
      */
     private boolean validateEntry( PieChartEntry entry )
     {
-        int percentages = 0;
+        float percentages = 0.0f;
         boolean validEntry = false;
 
         /* Add up all percentages currently within the chart */
@@ -221,7 +210,7 @@ public class PieChart extends View
         }
 
         /* If all percentages present plus the new entry are less than 100%, it can be added */
-        if( percentages + entry.getPercentage() <= 100 )
+        if( percentages + entry.getPercentage() <= 100.0f )
         {
             validEntry = true;
         }
@@ -234,9 +223,9 @@ public class PieChart extends View
      *
      * @return The free, unallocated percentage of the pie chart.
      */
-    private int getFreePercentage()
+    private float getFreePercentage()
     {
-        int percentages = 0;
+        float percentages = 0.0f;
 
         /* Add up all percentages currently within the chart */
         for( PieChartEntry e : m_ChartEntries )
@@ -244,13 +233,13 @@ public class PieChart extends View
             percentages += e.getPercentage();
         }
 
-        if( percentages < 100 )
+        if( percentages < 100.0f )
         {
-            return( 100 - percentages );
+            return( 100.0f - percentages );
         }
         else
         {
-            return( 0 );
+            return( 0.0f );
         }
     }
 
@@ -260,9 +249,9 @@ public class PieChart extends View
      * @param percent A given percentage (0-100%).
      * @return The corresponding angle, in radians.
      */
-    private double convertPercentageToRadians( int percent )
+    private float convertPercentageToRadians( float percent )
     {
-        return( ( percent * ( 2 * Math.PI ) ) / 100 );
+        return( (float)( percent * ( 2.0f * Math.PI ) ) / 100.0f );
     }
 
     /**
@@ -271,8 +260,8 @@ public class PieChart extends View
      * @param percent A given percentage (0-100%).
      * @return The corresponding angle, in radians.
      */
-    private double convertPercentageToDegrees( int percent )
+    private float convertPercentageToDegrees( float percent )
     {
-        return( ( percent * 360 ) / 100 );
+        return( ( percent * 360.0f ) / 100.0f );
     }
 }

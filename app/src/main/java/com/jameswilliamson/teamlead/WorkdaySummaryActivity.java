@@ -80,10 +80,20 @@ public class WorkdaySummaryActivity extends AppCompatActivity
 
             /* Test */
             chart.addEntry( new PieChartEntry( "1", 10, 0 ) );
-            chart.addEntry( new PieChartEntry( "2", 10, 1 ) );
-            chart.addEntry( new PieChartEntry( "3", 10, 2 ) );
-            chart.addEntry( new PieChartEntry( "4", 20, 3 ) );
-            chart.addEntry( new PieChartEntry( "4", 50, 4 ) );
+            chart.addEntry( new PieChartEntry( "2", 5, 1 ) );
+            chart.addEntry( new PieChartEntry( "3", 3, 2 ) );
+            chart.addEntry( new PieChartEntry( "4", 7, 3 ) );
+            chart.addEntry( new PieChartEntry( "5", 2, 4 ) );
+            chart.addEntry( new PieChartEntry( "6", 3, 5 ) );
+            chart.addEntry( new PieChartEntry( "7", 10, 6 ) );
+            chart.addEntry( new PieChartEntry( "8", 1, 7 ) );
+            chart.addEntry( new PieChartEntry( "9", 2, 8 ) );
+            chart.addEntry( new PieChartEntry( "10", 5, 9 ) );
+            chart.addEntry( new PieChartEntry( "11", 18, 10 ) );
+            chart.addEntry( new PieChartEntry( "12", 10, 11 ) );
+            chart.addEntry( new PieChartEntry( "13", 4, 12 ) );
+            chart.addEntry( new PieChartEntry( "14", 7, 13 ) );
+            chart.addEntry( new PieChartEntry( "15", 13, 14 ) );
 
             return( chart );
         }

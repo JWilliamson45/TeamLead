@@ -15,7 +15,7 @@ public class PieChartEntry
 {
     /* Private member fields */
     private String m_EntryName;                /* The name of the chart entry */
-    private int m_EntryPercentage;             /* The percentage that the entry represents of the total */
+    private float m_EntryPercentage;           /* The percentage that the entry represents of the total */
     private int m_EntryId;                     /* A handle associated with the entry */
 
     /**
@@ -25,7 +25,7 @@ public class PieChartEntry
      * @param percentage The weight given to the entry, in terms of percentage (0-100% supported).
      * @param id A ID handle associated with the entry.
      */
-    public PieChartEntry( String name, int percentage, int id )
+    public PieChartEntry( String name, float percentage, int id )
     {
         m_EntryName = name;
         m_EntryPercentage = percentage;
@@ -47,7 +47,7 @@ public class PieChartEntry
      *
      * @return The percentage of the chart that the entry represents (0-100%).
      */
-    public int getPercentage()
+    public float getPercentage()
     {
         return( m_EntryPercentage );
     }
@@ -57,7 +57,7 @@ public class PieChartEntry
      *
      * @param percentage The percentage of the chart that the entry represents (0-100%).
      */
-    public void setPercentage( int percentage )
+    public void setPercentage( float percentage )
     {
         m_EntryPercentage = percentage;
     }
