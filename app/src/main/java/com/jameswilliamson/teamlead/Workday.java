@@ -24,9 +24,6 @@ public class Workday
 {
     /* Private constants */
     private static final String TIMER_FIELD_FORMAT = "00"; /* Format used for presenting task time to the user */
-    private static final int MS_PER_SEC = 1000;            /* Conversion constant for seconds <-> milliseconds */
-    private static final int SEC_PER_MIN = 60;             /* Conversion constant for seconds <-> minutes */
-    private static final int MIN_PER_HOUR = 60;            /* Conversion constant for minutes <-> hours */
     private static final int NUM_SPECIAL_TASKS = 2;        /* The number of "special tasks" in the Workday */
 
     /* Private member fields */
@@ -35,6 +32,12 @@ public class Workday
     private ArrayDeque<TaskIteration> m_TaskLog;           /* Sequence of task iterations that constitute the workday */
     private TaskIteration m_ActiveIteration;               /* The currently active task iteration */
     private DecimalFormat m_TimeFormatter;                 /* Formats task time for presentation to the user */
+
+    /* Public constants */
+    public static final int MS_PER_SEC = 1000;             /* Conversion constant for seconds <-> milliseconds */
+    public static final int SECS_PER_MIN = 60;             /* Conversion constant for seconds <-> minutes */
+    public static final int MINS_PER_HOUR = 60;            /* Conversion constant for minutes <-> hours */
+    public static final int HOURS_PER_DAY = 24;            /* Conversion constant for hours <-> days */
 
     /**
      * Constructs the Workday object.
@@ -195,22 +198,16 @@ public class Workday
             {
                 /* Get the task associated with the index and query the runtime */
                 Task task = m_Tasks.get( taskIndex );
-                long taskRuntimeMs = task.getRuntimeMs();
-
-                if( m_ActiveIteration.getTask().equals( task ) )
-                {
-                    /* The task being queried is currently active, so add the up-to-date time to the total */
-                    taskRuntimeMs += m_ActiveIteration.getRuntimeMs();
-                }
+                long taskRuntimeMs = this.getTotalTaskRuntimeMs( taskIndex );
 
                 /* Convert total millisecond task time to hours, minutes, and seconds */
                 int seconds = (int)( taskRuntimeMs / MS_PER_SEC );
-                int minutes = ( seconds / SEC_PER_MIN );
-                int hours = ( minutes / MIN_PER_HOUR );
+                int minutes = ( seconds / SECS_PER_MIN );
+                int hours = ( minutes / MINS_PER_HOUR );
 
                 /* Adjust for remainder so that hh:mm:ss reported to user is cohesive */
-                seconds = ( seconds % SEC_PER_MIN );
-                minutes = ( minutes % MIN_PER_HOUR );
+                seconds = ( seconds % SECS_PER_MIN );
+                minutes = ( minutes % MINS_PER_HOUR );
 
                 /* Build string and return to user */
                 timeSpent = m_TimeFormatter.format( hours );
@@ -222,6 +219,68 @@ public class Workday
         }
 
         return( timeSpent );
+    }
+
+    /**
+     * Checks to see if a particular task limit has been exceeded.
+     *
+     * @param taskIndex The index of the task.
+     * @return True if the task has exceeded it's configured limit time, false otherwise.
+     */
+    boolean isTaskLimitExceeded( int taskIndex )
+    {
+        boolean limitExceeded = false;
+
+        /* Boundary check */
+        if( taskIndex < m_Tasks.size() )
+        {
+            long taskTimeLimit = m_Tasks.get( taskIndex ).getTaskTimeLimit();
+
+            if( taskTimeLimit != 0 )
+            {
+                /* Non-zero limit; compare it to current runtime */
+                if( this.getTotalTaskRuntimeMs( taskIndex ) > taskTimeLimit )
+                {
+                    limitExceeded = true;
+                }
+            }
+        }
+
+        return( limitExceeded );
+    }
+
+    /**
+     * Assigns a new color code to the specified task.
+     *
+     * @param taskIndex The index of the task.
+     * @param newColor The new color code to associate with the task.
+     */
+    void setTaskColor( int taskIndex, int newColor )
+    {
+        /* Boundary check */
+        if( taskIndex < m_Tasks.size() )
+        {
+            m_Tasks.get( taskIndex ).setTaskColor( newColor );
+        }
+    }
+
+    /**
+     * Returns the color code associated with the specified task.
+     *
+     * @param taskIndex The index of the task.
+     * @return The task's color code.
+     */
+    int getTaskColor( int taskIndex )
+    {
+        /* Boundary check */
+        if( taskIndex < m_Tasks.size() )
+        {
+            return( m_Tasks.get( taskIndex ).getTaskColor() );
+        }
+        else
+        {
+            return( 0 );
+        }
     }
 
     /**
@@ -255,5 +314,28 @@ public class Workday
             /* Add the stopped active iteration to the queue */
             m_TaskLog.add( m_ActiveIteration );
         }
+    }
+
+    /**
+     * Returns the total task runtime, in milliseconds. If the task is currently active, the current iteration is
+     * included as part of the calculation.
+     *
+     * @param taskIndex The index of the task.
+     * @return The total runtime of the task, in milliseconds.
+     */
+    private long getTotalTaskRuntimeMs( int taskIndex )
+    {
+        long taskRuntimeMs = m_Tasks.get( taskIndex ).getRuntimeMs();
+
+        if( m_ActiveIteration != null )
+        {
+            if( m_ActiveIteration.getTask().equals( m_Tasks.get( taskIndex ) ) )
+            {
+                /* The task being queried is currently active, so add the up-to-date time to the total */
+                taskRuntimeMs += m_ActiveIteration.getRuntimeMs();
+            }
+        }
+
+        return( taskRuntimeMs );
     }
 }

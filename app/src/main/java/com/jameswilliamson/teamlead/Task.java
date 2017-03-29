@@ -11,9 +11,13 @@
 
 package com.jameswilliamson.teamlead;
 
+import android.support.annotation.ColorInt;
 
 class Task
 {
+    /* Private constants */
+    @ColorInt private final int NO_COLOR = 0xFF000000; /* No color; opaque black */
+
     /* Public constants */
     static final int TASK_NAME_CHARS_MAX = 8;          /* The maximum allowable length of a task name */
 
@@ -21,6 +25,8 @@ class Task
     private String m_TaskName;                         /* The name of the task */
     private boolean m_TaskActive;                      /* Marks whether or not this task is currently active */
     private long m_TotalTaskRuntimeMs;                 /* Total time spent on all previous iterations of the task */
+    @ColorInt private int m_TaskColor;                 /* The color code assigned to the task for display on the UI */
+    private long m_TaskTimeLimitMs;                    /* A user-defined limit on time to spend on the task */
 
     /**
      * Constructs a new task and gives it a name.
@@ -32,6 +38,8 @@ class Task
         m_TaskName = taskName;
         m_TaskActive = false;
         m_TotalTaskRuntimeMs = 0;
+        m_TaskColor = NO_COLOR;
+        m_TaskTimeLimitMs = 0;
     }
 
     /**
@@ -98,6 +106,75 @@ class Task
     long getRuntimeMs()
     {
         return( m_TotalTaskRuntimeMs );
+    }
+
+    /**
+     * Assigns a new color code to the task.
+     *
+     * @param newColor The new color code to associate with the task.
+     */
+    void setTaskColor( int newColor )
+    {
+        m_TaskColor = newColor;
+    }
+
+    /**
+     * Returns the color code associated with the task.
+     *
+     * @return The task's color code.
+     */
+    int getTaskColor()
+    {
+        return( m_TaskColor );
+    }
+
+    /**
+     * Sets a new user-defined limit for time to spend on the task. This may be used for alarm applications. If
+     * the new value is zero, it means that no limit is specified.
+     *
+     * @param hours The hours component of the limit.
+     * @param minutes The minutes component of the limit.
+     * @param seconds The seconds component of the limit.
+     */
+    void setTaskTimeLimit( int hours, int minutes, int seconds )
+    {
+        /* Boundary checks */
+        if( ( hours < Workday.HOURS_PER_DAY ) &&
+            ( minutes < Workday.MINS_PER_HOUR ) &&
+            ( seconds < Workday.SECS_PER_MIN ) )
+        {
+            /* Convert hours to milliseconds */
+            long taskLimitMs = hours * Workday.MINS_PER_HOUR * Workday.SECS_PER_MIN * Workday.MS_PER_SEC;
+
+            /* Convert minutes to milliseconds */
+            taskLimitMs += minutes * Workday.SECS_PER_MIN * Workday.MS_PER_SEC;
+
+            /* Convert seconds to milliseconds */
+            taskLimitMs += seconds * Workday.MS_PER_SEC;
+
+            setTaskTimeLimit( taskLimitMs );
+        }
+    }
+
+    /**
+     * Sets a new user-defined limit for time to spend on the task. This may be used for alarm applications. If
+     * the new value is zero, it means that no limit is specified.
+     *
+     * @param newLimitMs The new task time limit.
+     */
+    void setTaskTimeLimit( long newLimitMs )
+    {
+        m_TaskTimeLimitMs = newLimitMs;
+    }
+
+    /**
+     * Returns the set limit for time to spend on the task.
+     *
+     * @return The assigned task time limit.
+     */
+    long getTaskTimeLimit()
+    {
+        return( m_TaskTimeLimitMs );
     }
 
     /**

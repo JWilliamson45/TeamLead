@@ -29,7 +29,7 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:clickable="false"
-        android:background="@color/taskButtonBlueInactive"
-        android:textColor="@color/taskButtonText"/>
+        android:background="@color/taskButtonDefaultBlueInactive"
+        android:textColor="@color/taskButtonTextDefault"/>
 
 </RelativeLayout>

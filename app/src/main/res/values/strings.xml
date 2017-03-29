@@ -19,11 +19,21 @@
 
     <!-- AddNewTaskActivity -->
     <string name="add_new_task_activity_title">Create Task</string>
+    <string name="enter_task_name_label">Enter task name:</string>
+    <string name="enter_task_limit_label">Set optional task time limit:</string>
+    <string name="hours_picker_label">Hours</string>
+    <string name="minutes_picker_label">Minutes</string>
+    <string name="seconds_picker_label">Seconds</string>
+    <string name="enter_task_color_label">Choose task button color:</string>
+    <string name="red_picker_label">Red</string>
+    <string name="green_picker_label">Green</string>
+    <string name="blue_picker_label">Blue</string>
+    <string name="alpha_picker_label">Alpha</string>
     <string name="add_button_label">Add</string>
-    <string name="ok_button_label">OK</string>
     <string name="invalid_task_dialog_title">Invalid Task Name</string>
     <string name="invalid_task_name_zero_dialog_msg">You must enter a valid task name.</string>
     <string name="invalid_task_name_length_dialog_msg">A task name cannot be longer than %1$d characters.</string>
+    <string name="ok_button_label">OK</string>
 
     <!-- WorkdaySummaryActiity -->
     <string name="workday_summary_activity_title">Workday Summary</string>

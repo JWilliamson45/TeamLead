@@ -9,10 +9,17 @@
     @version 0.3.0
 -->
 
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/add_new_task_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/add_new_task_relative_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -33,30 +40,259 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:text="Enter task name: "
-        android:textSize="20dp"/>
+        android:text="@string/enter_task_name_label"
+        android:textSize="20sp"/>
 
     <EditText
         android:id="@+id/enter_task_name_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/enter_task_name_label"
-        android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"/>
+
+    <TextView
+        android:id="@+id/enter_task_limit_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/enter_task_name_field"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="22dp"
+        android:text="@string/enter_task_limit_label"
+        android:textSize="20sp"/>
+
+    <!-- Nested layout for hour limit picker -->
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/enter_task_hour_limit_sublayout"
+        android:layout_below="@id/enter_task_limit_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp">
+
+        <TextView
+            android:id="@+id/enter_task_hour_limit_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/hours_picker_label"
+            android:textColor="@color/configScreenSubheadingText"
+            android:textSize="16sp"/>
+
+        <NumberPicker
+            android:id="@+id/enter_task_hour_limit_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/enter_task_hour_limit_label"/>
+
+    </RelativeLayout>
+
+    <!-- Nested layout for minute limit picker -->
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/enter_task_minute_limit_sublayout"
+        android:layout_below="@id/enter_task_limit_label"
+        android:layout_toRightOf="@id/enter_task_hour_limit_sublayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
+
+        <TextView
+            android:id="@+id/enter_task_minute_limit_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/minutes_picker_label"
+            android:textColor="@color/configScreenSubheadingText"
+            android:textSize="16sp"/>
+
+        <NumberPicker
+            android:id="@+id/enter_task_minute_limit_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/enter_task_minute_limit_label"/>
+
+    </RelativeLayout>
+
+    <!-- Nested layout for second limit picker -->
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/enter_task_second_limit_sublayout"
+        android:layout_below="@id/enter_task_limit_label"
+        android:layout_toRightOf="@id/enter_task_minute_limit_sublayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
+
+        <TextView
+            android:id="@+id/enter_task_second_limit_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/seconds_picker_label"
+            android:textColor="@color/configScreenSubheadingText"
+            android:textSize="16sp"/>
+
+        <NumberPicker
+            android:id="@+id/enter_task_second_limit_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/enter_task_second_limit_label"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/enter_task_color_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/enter_task_hour_limit_sublayout"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="22dp"
+        android:text="@string/enter_task_color_label"
+        android:textSize="20sp"/>
+
+    <!-- Nested layout for red color picker -->
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/enter_task_red_color_sublayout"
+        android:layout_below="@id/enter_task_color_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp">
+
+        <TextView
+            android:id="@+id/enter_task_color_red_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/red_picker_label"
+            android:textColor="@color/configScreenSubheadingText"
+            android:textSize="16sp"/>
+
+        <NumberPicker
+            android:id="@+id/enter_task_red_color_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/enter_task_color_red_label"/>
+
+    </RelativeLayout>
+
+    <!-- Nested layout for green color picker -->
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/enter_task_green_color_sublayout"
+        android:layout_below="@id/enter_task_color_label"
+        android:layout_toRightOf="@id/enter_task_red_color_sublayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
+
+        <TextView
+            android:id="@+id/enter_task_color_green_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/green_picker_label"
+            android:textColor="@color/configScreenSubheadingText"
+            android:textSize="16sp"/>
+
+        <NumberPicker
+            android:id="@+id/enter_task_green_color_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/enter_task_color_green_label"/>
+
+    </RelativeLayout>
+
+    <!-- Nested layout for blue color picker -->
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/enter_task_blue_color_sublayout"
+        android:layout_below="@id/enter_task_color_label"
+        android:layout_toRightOf="@id/enter_task_green_color_sublayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
+
+        <TextView
+            android:id="@+id/enter_task_color_blue_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/blue_picker_label"
+            android:textColor="@color/configScreenSubheadingText"
+            android:textSize="16sp"/>
+
+        <NumberPicker
+            android:id="@+id/enter_task_blue_color_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/enter_task_color_blue_label"/>
+
+    </RelativeLayout>
+
+    <!-- Nested layout for alpha color picker
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/enter_task_alpha_color_sublayout"
+        android:layout_below="@id/enter_task_color_label"
+        android:layout_toRightOf="@id/enter_task_blue_color_sublayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp">
+
+        <TextView
+            android:id="@+id/enter_task_color_alpha_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/alpha_picker_label"
+            android:textColor="@color/configScreenSubheadingText"
+            android:textSize="16sp"/>
+
+        <NumberPicker
+            android:id="@+id/enter_task_alpha_color_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/enter_task_color_alpha_label"/>
+
+    </RelativeLayout>
+    -->
 
     <Button
         android:id="@+id/add_task_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/enter_task_name_field"
+        android:layout_below="@id/enter_task_red_color_sublayout"
+        android:layout_marginTop="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginBottom="24dp"
         android:textAllCaps="false"
         android:text="@string/add_button_label"
-        android:background="@color/colorPrimary"
+        android:background="@color/taskButtonDefaultBlueInactive"
         android:textColor="@color/colorPrimaryText"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:gravity="center"/>
 
 </RelativeLayout>
+
+</ScrollView>

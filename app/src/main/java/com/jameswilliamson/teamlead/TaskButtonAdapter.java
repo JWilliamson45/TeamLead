@@ -14,6 +14,7 @@ package com.jameswilliamson.teamlead;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,9 @@ import android.widget.Button;
 
 class TaskButtonAdapter extends BaseAdapter
 {
+    /* Private constants */
+    private final float BUTTON_ALPHA_FADE_PCT = .25f;  /* Pct. to fade the task button color alpha on selection */
+
     /* Private member fields */
     private Workday m_Workday;                         /* Contains the list of tasks to be displayed on the GUI */
     private Activity m_Activity;                       /* The associated activity */
@@ -131,15 +135,31 @@ class TaskButtonAdapter extends BaseAdapter
             /* Update the button text, since the time value can change */
             taskButton.setText( m_Workday.getTaskName( position ) + "\n\n" + m_Workday.getTaskRuntime( position ) );
 
+            /* If the task has a time limit, check to see whether or not it's been exceeded */
+            if( m_Workday.isTaskLimitExceeded( position ) == true )
+            {
+                /* Over-budget on time; paint the task text color red to indicate this */
+                taskButton.setTextColor( ContextCompat.getColor( m_Activity.getApplicationContext(),
+                                                                 R.color.taskButtonTextAlarm ));
+            }
+
             if( m_Workday.getTask( position ).isActive() )
             {
-                /* User task button is selected; paint it a little darker */
-                buttonColor = ( (TeamLeadApplication)m_Activity.getApplication() ).getTaskButtonActiveColor();
+                /* User task button is selected */
+                buttonColor = m_Workday.getTaskColor( position );
+
+                /* Reduce the alpha value by a fixed percentage to indicate that it's clicked */
+                int alpha = Color.alpha( buttonColor );
+                alpha =- (int)( BUTTON_ALPHA_FADE_PCT * alpha );
+
+                /* Reconstruct the color value */
+                buttonColor = Color.argb( alpha, Color.red( buttonColor ), Color.green( buttonColor ),
+                                          Color.blue( buttonColor ) );
             }
             else
             {
                 /* User task button is not selected */
-                buttonColor = ( (TeamLeadApplication)m_Activity.getApplication() ).getTaskButtonInactiveColor();
+                buttonColor = m_Workday.getTaskColor( position );
             }
         }
 

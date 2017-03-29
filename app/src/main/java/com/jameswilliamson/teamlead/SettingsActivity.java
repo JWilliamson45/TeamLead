@@ -111,23 +111,19 @@ public class SettingsActivity extends AppCompatActivity
                 /* Determine what new preference has been selected, and change the button colors accordingly */
                 if( preference.getValue().equals( "color-BLUE" ) )
                 {
-                    app.setTaskButtonColors( ContextCompat.getColor( appContext, R.color.taskButtonBlueActive ),
-                                             ContextCompat.getColor( appContext, R.color.taskButtonBlueInactive ) );
+                    // TODO: 3/27/2017 Deprecated; remove
                 }
                 else if( preference.getValue().equals( "color-GREEN" ) )
                 {
-                    app.setTaskButtonColors( ContextCompat.getColor( appContext, R.color.taskButtonGreenActive ),
-                                             ContextCompat.getColor( appContext, R.color.taskButtonGreenInactive ) );
+                    // TODO: 3/27/2017 Deprecated; remove
                 }
                 else if( preference.getValue().equals( "color-RED" ) )
                 {
-                    app.setTaskButtonColors( ContextCompat.getColor( appContext, R.color.taskButtonRedActive ),
-                                             ContextCompat.getColor( appContext, R.color.taskButtonRedInactive ) );
+                    // TODO: 3/27/2017 Deprecated; remove
                 }
                 else if( preference.getValue().equals( "color-YELLOW" ) )
                 {
-                    app.setTaskButtonColors( ContextCompat.getColor( appContext, R.color.taskButtonYellowActive ),
-                                             ContextCompat.getColor( appContext, R.color.taskButtonYellowInactive ) );
+                    // TODO: 3/27/2017 Deprecated; remove
                 }
             }
         }
