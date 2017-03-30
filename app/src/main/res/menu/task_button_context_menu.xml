@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    task_button_context_menu.xml
+
+    Menu specification for use with the task button context menus.
+
+    @author James Williamson
+    @version 0.3.0
+-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/delete_task"
+          android:title="@string/task_context_menu_delete_title"/>
+    <item android:id="@+id/edit_task"
+          android:title="@string/task_context_menu_edit_title"/>
+</menu>

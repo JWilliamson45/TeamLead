@@ -17,6 +17,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -61,6 +63,9 @@ public class ContextSwitchActivity extends AppCompatActivity
         TaskButtonAdapter m_GridAdapter = new TaskButtonAdapter( this, m_UserWorkday );
         m_TaskGrid.setAdapter( m_GridAdapter );
 
+        /* Register the grid view to display context menus */
+        registerForContextMenu( m_TaskGrid );
+
         /* Assign listeners */
         m_TaskGrid.setOnItemClickListener( new gridClickHandler() );
 
@@ -80,9 +85,39 @@ public class ContextSwitchActivity extends AppCompatActivity
     {
         /* Inflate the menu from the resources file that includes the menu entries */
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate( R.menu.context_switch_menu, menu );
+        inflater.inflate( R.menu.context_switch_toolbar_menu, menu );
 
         return( true );
+    }
+
+    /**
+     * Called when the context menu for this view is being built. It is not safe to hold onto the menu after this
+     * method returns.
+     *
+     * @param menu The context menu that is being built.
+     * @param v The view for which the context menu is being built.
+     * @param menuInfo Extra information about the item for which the context menu should be shown. This information
+     *                 will vary depending on the class of v.
+     */
+    @Override
+    public void onCreateContextMenu( ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo )
+    {
+        super.onCreateContextMenu( menu, v, menuInfo );
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+
+        if( info.position < m_UserWorkday.getNumberOfUserTasks() )
+        {
+            /* Get the task associated with this context menu (only if it's a user-defined task) */
+            Task selectedTask = m_UserWorkday.getTask( info.position );
+
+            /* Inflate the menu resource */
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate( R.menu.task_button_context_menu, menu );
+
+            /* Customize menu header */
+            menu.setHeaderTitle( selectedTask.getTaskName() + " " +
+                                 getString( R.string.task_context_menu_header_suffix ) );
+        }
     }
 
     /**

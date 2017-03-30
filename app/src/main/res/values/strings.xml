@@ -16,6 +16,7 @@
     <string name="context_switch_activity_title">TeamLead</string>
     <string name="add_task_label">Add</string>
     <string name="end_workday_label">End</string>
+    <string name="task_context_menu_header_suffix">Task Options</string>
 
     <!-- AddNewTaskActivity -->
     <string name="add_new_task_activity_title">Create Task</string>
@@ -63,6 +64,10 @@
     <!-- Options menu -->
     <string name="contextswitch_menu_settings_title">Settings</string>
     <string name="contextswitch_menu_about_title">About</string>
+
+    <!-- Task button context menu -->
+    <string name="task_context_menu_delete_title">Delete</string>
+    <string name="task_context_menu_edit_title">Edit</string>
 
     <!-- UnsupportedFunctionDialog -->
     <string name="invalid_function_dialog_title">Unsupported Function</string>
