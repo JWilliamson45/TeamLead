@@ -109,6 +109,14 @@ class Task
     }
 
     /**
+     * Resets the task runtime to zero.
+     */
+    void resetRuntime()
+    {
+        m_TotalTaskRuntimeMs = 0;
+    }
+
+    /**
      * Assigns a new color code to the task.
      *
      * @param newColor The new color code to associate with the task.

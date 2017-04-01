@@ -87,6 +87,29 @@ public class Workday
     }
 
     /**
+     * Removes the given task from the Workday.
+     *
+     * @param task A task to remove from the Workday.
+     * @return An error code indicative of success or failure.
+     */
+    ErrorCode deleteTask( Task task )
+    {
+        ErrorCode taskErr = ErrorCode.ERR_NONE;
+
+        if( m_Tasks.contains( task ) == true )
+        {
+            /* Remove the task from the model */
+            m_Tasks.remove( task );
+        }
+        else
+        {
+            taskErr = ErrorCode.ERR_TASK_INVALID;
+        }
+
+        return( taskErr );
+    }
+
+    /**
      * Returns the number of user-defined tasks that currently make up a Workday.
      *
      * @return The number of user-defined tasks added to the Workday.
@@ -174,10 +197,7 @@ public class Workday
     {
         endTask();
 
-        /*
-         * TODO: 2/12/2017 Add feature that creates a graph using the task log. Might also need to do clear/save
-         *                 operations as well.
-         */
+        // TODO: 4/1/2017 Save or export the data before clearing it.
     }
 
     /**
@@ -219,6 +239,34 @@ public class Workday
         }
 
         return( timeSpent );
+    }
+
+    /**
+     * Returns the percentage of the Workday that was allocated to the given task.
+     *
+     * @param taskIndex The index of the task to query.
+     * @return The percentage of the day spent on the specified task.
+     */
+    double getTaskPercentage( int taskIndex )
+    {
+        double percentage = 0.0;
+
+        /* Boundary check */
+        if( taskIndex < m_Tasks.size() )
+        {
+            double totalTaskRuntimeTally = 0.0;
+            double specifiedTaskRuntime = (double)getTotalTaskRuntimeMs( taskIndex );
+
+            /* Count up total task runtime, including only user tasks */
+            for( int index = 0; index < getNumberOfUserTasks(); index++ )
+            {
+                totalTaskRuntimeTally += getTotalTaskRuntimeMs( index );
+            }
+
+            percentage = ( specifiedTaskRuntime / totalTaskRuntimeTally ) * 100.0;
+        }
+
+        return( percentage );
     }
 
     /**
@@ -284,6 +332,22 @@ public class Workday
     }
 
     /**
+     * Clears the task log from the workday and resets all timing data to zero. The list of user tasks is left
+     * intact.
+     */
+    private void resetWorkday()
+    {
+        /* Clear the task log */
+        m_TaskLog.clear();
+
+        /* Reset all timing data */
+        for( Task task : m_Tasks )
+        {
+            task.resetRuntime();
+        }
+    }
+
+    /**
      * Begins performing the task identified by the given index.
      *
      * @param taskIndex The index of the task to begin.
@@ -305,14 +369,15 @@ public class Workday
         if( m_ActiveIteration != null )
         {
             /* Stop the iteration */
-            m_ActiveIteration.end();
+            if( m_ActiveIteration.end() != ErrorCode.ERR_TASK_ALREADY_STOPPED )
+            {
+                /* Add the iteration's runtime to the task's running total */
+                long iterationRuntimeMs = m_ActiveIteration.getRuntimeMs();
+                m_ActiveIteration.getTask().addRuntimeMs( iterationRuntimeMs );
 
-            /* Add the iteration's runtime to the task's running total */
-            long iterationRuntimeMs = m_ActiveIteration.getRuntimeMs();
-            m_ActiveIteration.getTask().addRuntimeMs( iterationRuntimeMs );
-
-            /* Add the stopped active iteration to the queue */
-            m_TaskLog.add( m_ActiveIteration );
+                /* Add the stopped active iteration to the queue */
+                m_TaskLog.add( m_ActiveIteration );
+            }
         }
     }
 

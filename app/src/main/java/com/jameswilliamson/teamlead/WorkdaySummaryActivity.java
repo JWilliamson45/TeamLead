@@ -66,9 +66,9 @@ public class WorkdaySummaryActivity extends AppCompatActivity
          * Called to have the fragment instantiate its user interface view.
          *
          * @param inflater           The LayoutInflater object that can be used to inflate any views in the fragment.
-         * @param container          If non-null, this is the parent view that the fragment's UI should be attached to. The
-         *                           fragment should not add the view itself, but this can be used to generate the LayoutParams
-         *                           of the view.
+         * @param container          If non-null, this is the parent view that the fragment's UI should be attached to.
+         *                           The fragment should not add the view itself, but this can be used to generate the
+         *                           LayoutParams of the view.
          * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state
          *                           as given here.
          * @return Return the View for the fragment's UI, or null.
@@ -76,24 +76,18 @@ public class WorkdaySummaryActivity extends AppCompatActivity
         @Override
         public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState )
         {
+            /* Create a new PieChart to be shown to the user */
             PieChart chart = new PieChart( getActivity() );
+            Workday userWorkday = ( (TeamLeadApplication)getActivity().getApplication() ).getWorkdayModel();
 
-            /* Test */
-            chart.addEntry( new PieChartEntry( "1", 10, 0 ) );
-            chart.addEntry( new PieChartEntry( "2", 5, 1 ) );
-            chart.addEntry( new PieChartEntry( "3", 3, 2 ) );
-            chart.addEntry( new PieChartEntry( "4", 7, 3 ) );
-            chart.addEntry( new PieChartEntry( "5", 2, 4 ) );
-            chart.addEntry( new PieChartEntry( "6", 3, 5 ) );
-            chart.addEntry( new PieChartEntry( "7", 10, 6 ) );
-            chart.addEntry( new PieChartEntry( "8", 1, 7 ) );
-            chart.addEntry( new PieChartEntry( "9", 2, 8 ) );
-            chart.addEntry( new PieChartEntry( "10", 5, 9 ) );
-            chart.addEntry( new PieChartEntry( "11", 18, 10 ) );
-            chart.addEntry( new PieChartEntry( "12", 10, 11 ) );
-            chart.addEntry( new PieChartEntry( "13", 4, 12 ) );
-            chart.addEntry( new PieChartEntry( "14", 7, 13 ) );
-            chart.addEntry( new PieChartEntry( "15", 13, 14 ) );
+            /* For each entry, paint a segment that is sized using the task runtime */
+            for( int index = 0; index < userWorkday.getNumberOfUserTasks(); index++ )
+            {
+                String taskName = userWorkday.getTaskName( index );
+                double percentage = userWorkday.getTaskPercentage( index );
+
+                chart.addEntry( new PieChartEntry( taskName, (float)percentage, index ) );
+            }
 
             return( chart );
         }
