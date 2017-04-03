@@ -17,6 +17,10 @@
     <string name="add_task_label">Add</string>
     <string name="end_workday_label">End</string>
     <string name="task_context_menu_header_suffix">Task Options</string>
+    <string name="reset_task_data_dialog_title">Reset Workday Data?</string>
+    <string name="reset_task_data_dialog_message">This will reset all task timing data.</string>
+    <string name="ok_button_label">OK</string>
+    <string name="cancel_button_label">Cancel</string>
 
     <!-- AddNewTaskActivity -->
     <string name="add_new_task_activity_title">Create Task</string>
@@ -34,7 +38,10 @@
     <string name="invalid_task_dialog_title">Invalid Task Name</string>
     <string name="invalid_task_name_zero_dialog_msg">You must enter a valid task name.</string>
     <string name="invalid_task_name_length_dialog_msg">A task name cannot be longer than %1$d characters.</string>
-    <string name="ok_button_label">OK</string>
+
+    <!-- TaskLogActivity -->
+    <string name="task_log_activity_title">Task Log</string>
+    <string name="task_log_header">User task log:\n</string>
 
     <!-- WorkdaySummaryActiity -->
     <string name="workday_summary_activity_title">Workday Summary</string>
@@ -63,6 +70,8 @@
 
     <!-- Options menu -->
     <string name="contextswitch_menu_settings_title">Settings</string>
+    <string name="contextswitch_menu_reset_title">Reset Workday</string>
+    <string name="contextswitch_menu_task_log_title">View Task Log</string>
     <string name="contextswitch_menu_about_title">About</string>
 
     <!-- Task button context menu -->

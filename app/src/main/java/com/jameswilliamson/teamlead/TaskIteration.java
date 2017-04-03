@@ -123,4 +123,14 @@ class TaskIteration
 
         return( currentRuntimeMs );
     }
+
+    /**
+     * Returns the string representation of the task iteration.
+     *
+     * @return The task iteration's name and runtime.
+     */
+    @Override public String toString()
+    {
+        return( m_Task.getTaskName() + ": " + Workday.convertMsToFormattedTimeString( getRuntimeMs() ) );
+    }
 }

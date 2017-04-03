@@ -13,11 +13,14 @@
 package com.jameswilliamson.teamlead;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -138,6 +141,15 @@ public class ContextSwitchActivity extends AppCompatActivity
                 startActivity( new Intent( m_ThisActivity, SettingsActivity.class ) );
                 break;
 
+            case R.id.reset:
+                UserConfirmDialog userConfirmDialog = new UserConfirmDialog();
+                userConfirmDialog.show( m_ThisActivity.getFragmentManager(), UserConfirmDialog.TAG );
+                break;
+
+            case R.id.view_log:
+                startActivity( new Intent( m_ThisActivity, TaskLogActivity.class ) );
+                break;
+
             case R.id.about:
                 break;
 
@@ -220,6 +232,75 @@ public class ContextSwitchActivity extends AppCompatActivity
         public void run()
         {
             m_TaskGrid.invalidateViews();
+        }
+    }
+
+    /**
+     * Dialog that is shown when a user's confirmation is required to reset all task data.
+     */
+    public static class UserConfirmDialog extends DialogFragment
+    {
+        /* Private constants */
+        private final static String TAG = "Confirm action";
+
+        /**
+         * Builds the dialog's container.
+         *
+         * @param savedInstanceState The last saved instance state of the Fragment, or null if this is a freshly
+         *                           created Fragment.
+         * @return Returns a new Dialog instance to be displayed by the Fragment.
+         */
+        @Override
+        public Dialog onCreateDialog( Bundle savedInstanceState )
+        {
+            /* Construct a dialog to inform the user that their task name cannot be accepted. */
+            AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
+            builder.setTitle( R.string.reset_task_data_dialog_title );
+
+            /* The dialog body should convey why the task name is invalid */
+            builder.setMessage( R.string.reset_task_data_dialog_message );
+
+            /* Allows user to dismiss the dialog */
+            builder.setPositiveButton( R.string.ok_button_label, new OkayButtonListener() );
+            builder.setNegativeButton( R.string.cancel_button_label, new CancelButtonListener() );
+
+            return( builder.create() );
+        }
+
+        /**
+         * Button listener for the dialog fragment positive action.
+         */
+        private class OkayButtonListener implements DialogInterface.OnClickListener
+        {
+            /**
+             * Called when the view has been clicked.
+             *
+             * @param dialog The dialog that received the click.
+             * @param which The button that was clicked, or the position of the item clicked.
+             */
+            @Override
+            public void onClick( DialogInterface dialog, int which )
+            {
+                ( (TeamLeadApplication)getActivity().getApplication() ).getWorkdayModel().resetWorkday();
+            }
+        }
+
+        /**
+         * Button listener for the dialog fragment negative action.
+         */
+        private class CancelButtonListener implements DialogInterface.OnClickListener
+        {
+            /**
+             * Called when the view has been clicked.
+             *
+             * @param dialog The dialog that received the click.
+             * @param which The button that was clicked, or the position of the item clicked.
+             */
+            @Override
+            public void onClick( DialogInterface dialog, int which )
+            {
+                dialog.cancel();
+            }
         }
     }
 }

@@ -28,8 +28,14 @@
             android:parentActivityName=".ContextSwitchActivity">
         </activity>
 
-        <activity android:name=".WorkdaySummaryActivity"
-                  android:parentActivityName=".ContextSwitchActivity">
+        <activity
+            android:name=".WorkdaySummaryActivity"
+            android:parentActivityName=".ContextSwitchActivity">
+        </activity>
+
+        <activity
+            android:name=".TaskLogActivity"
+            android:parentActivityName=".ContextSwitchActivity">
         </activity>
 
     </application>

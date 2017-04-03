@@ -19,11 +19,11 @@ import android.content.Context;
 import java.text.DecimalFormat;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Workday
 {
     /* Private constants */
-    private static final String TIMER_FIELD_FORMAT = "00"; /* Format used for presenting task time to the user */
     private static final int NUM_SPECIAL_TASKS = 2;        /* The number of "special tasks" in the Workday */
 
     /* Private member fields */
@@ -31,7 +31,6 @@ public class Workday
     private ArrayList<Task> m_Tasks;                       /* A set of all m_Tasks created by the user */
     private ArrayDeque<TaskIteration> m_TaskLog;           /* Sequence of task iterations that constitute the workday */
     private TaskIteration m_ActiveIteration;               /* The currently active task iteration */
-    private DecimalFormat m_TimeFormatter;                 /* Formats task time for presentation to the user */
 
     /* Public constants */
     public static final int MS_PER_SEC = 1000;             /* Conversion constant for seconds <-> milliseconds */
@@ -51,7 +50,6 @@ public class Workday
         m_Tasks = new ArrayList<>();
         m_TaskLog = new ArrayDeque<>();
         m_ActiveIteration = null;
-        m_TimeFormatter = new DecimalFormat( TIMER_FIELD_FORMAT );
 
         /* Create the "add new" task; a special type of task that is only used to define a new custom user task */
         m_Tasks.add( new Task( m_Context.getString( R.string.add_task_label ) ) );
@@ -148,6 +146,17 @@ public class Workday
     }
 
     /**
+     * Returns an iterator that can be used to access the task log. The iteration is done in reverse order (newest
+     * task performed first).
+     *
+     * @return An iterator used to access the task log.
+     */
+    Iterator<TaskIteration> getTaskLogIterator()
+    {
+        return( m_TaskLog.descendingIterator() );
+    }
+
+    /**
      * Returns the task at the specified index.
      *
      * @param taskIndex The index of the task.
@@ -208,7 +217,7 @@ public class Workday
      */
     String getTaskRuntime( int taskIndex )
     {
-        String timeSpent = "00:00:00";
+        long taskRuntimeMs = 0;
 
         /* Boundary check */
         if( taskIndex < m_Tasks.size() )
@@ -217,28 +226,11 @@ public class Workday
             if( m_ActiveIteration != null )
             {
                 /* Get the task associated with the index and query the runtime */
-                Task task = m_Tasks.get( taskIndex );
-                long taskRuntimeMs = this.getTotalTaskRuntimeMs( taskIndex );
-
-                /* Convert total millisecond task time to hours, minutes, and seconds */
-                int seconds = (int)( taskRuntimeMs / MS_PER_SEC );
-                int minutes = ( seconds / SECS_PER_MIN );
-                int hours = ( minutes / MINS_PER_HOUR );
-
-                /* Adjust for remainder so that hh:mm:ss reported to user is cohesive */
-                seconds = ( seconds % SECS_PER_MIN );
-                minutes = ( minutes % MINS_PER_HOUR );
-
-                /* Build string and return to user */
-                timeSpent = m_TimeFormatter.format( hours );
-                timeSpent = timeSpent.concat( ":" );
-                timeSpent = timeSpent.concat( m_TimeFormatter.format( minutes ) );
-                timeSpent = timeSpent.concat( ":" );
-                timeSpent = timeSpent.concat( m_TimeFormatter.format( seconds ) );
+                taskRuntimeMs = this.getTotalTaskRuntimeMs( taskIndex );
             }
         }
 
-        return( timeSpent );
+        return( convertMsToFormattedTimeString( taskRuntimeMs ) );
     }
 
     /**
@@ -335,8 +327,11 @@ public class Workday
      * Clears the task log from the workday and resets all timing data to zero. The list of user tasks is left
      * intact.
      */
-    private void resetWorkday()
+    void resetWorkday()
     {
+        /* Stop current task */
+        endTask();
+
         /* Clear the task log */
         m_TaskLog.clear();
 
@@ -345,6 +340,36 @@ public class Workday
         {
             task.resetRuntime();
         }
+    }
+
+    /**
+     *  Returns a string using "hh:mm:ss" format that corresponds to the given millisecond value.
+     *
+     * @param milliseconds A time value in milliseconds.
+     * @return The converted time value in "hh:mm:ss" format.
+     */
+    static String convertMsToFormattedTimeString( long milliseconds )
+    {
+        DecimalFormat m_TimeFormatter = new DecimalFormat( "00" );
+        String timeString = "00:00:00";
+
+        /* Convert total millisecond value to hours, minutes, and seconds */
+        int seconds = (int)( milliseconds / MS_PER_SEC );
+        int minutes = ( seconds / SECS_PER_MIN );
+        int hours = ( minutes / MINS_PER_HOUR );
+
+        /* Adjust for remainder so that hh:mm:ss reported to user is cohesive */
+        seconds = ( seconds % SECS_PER_MIN );
+        minutes = ( minutes % MINS_PER_HOUR );
+
+        /* Build string and return to user */
+        timeString = m_TimeFormatter.format( hours );
+        timeString = timeString.concat( ":" );
+        timeString = timeString.concat( m_TimeFormatter.format( minutes ) );
+        timeString = timeString.concat( ":" );
+        timeString = timeString.concat( m_TimeFormatter.format( seconds ) );
+
+        return( timeString );
     }
 
     /**
