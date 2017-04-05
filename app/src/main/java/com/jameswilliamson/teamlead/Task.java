@@ -202,7 +202,7 @@ class Task
             {
                 Task otherTask = (Task)obj;
 
-                if( m_TaskName.equals( otherTask.getTaskName() ) )
+                if( m_TaskName.equalsIgnoreCase( otherTask.getTaskName() ) )
                 {
                     isEqual = true;
                 }

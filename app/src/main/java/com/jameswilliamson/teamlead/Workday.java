@@ -146,6 +146,17 @@ public class Workday
     }
 
     /**
+     * Returns the number of entries in the task log. Note that this does not include the current iteration (which is
+     * technically not yet added to the log).
+     *
+     * @return The number of entries in the task log.
+     */
+    int getTaskLogSize()
+    {
+        return( m_TaskLog.size() );
+    }
+
+    /**
      * Returns an iterator that can be used to access the task log. The iteration is done in reverse order (newest
      * task performed first).
      *
@@ -222,12 +233,8 @@ public class Workday
         /* Boundary check */
         if( taskIndex < m_Tasks.size() )
         {
-            /* If no task is active, cannot return an elapsed time */
-            if( m_ActiveIteration != null )
-            {
-                /* Get the task associated with the index and query the runtime */
-                taskRuntimeMs = this.getTotalTaskRuntimeMs( taskIndex );
-            }
+            /* Get the task associated with the index and query the runtime */
+            taskRuntimeMs = this.getTotalTaskRuntimeMs( taskIndex );
         }
 
         return( convertMsToFormattedTimeString( taskRuntimeMs ) );
@@ -255,7 +262,10 @@ public class Workday
                 totalTaskRuntimeTally += getTotalTaskRuntimeMs( index );
             }
 
-            percentage = ( specifiedTaskRuntime / totalTaskRuntimeTally ) * 100.0;
+            if( totalTaskRuntimeTally != 0.0 )
+            {
+                percentage = ( specifiedTaskRuntime / totalTaskRuntimeTally ) * 100.0;
+            }
         }
 
         return( percentage );
@@ -396,12 +406,9 @@ public class Workday
             /* Stop the iteration */
             if( m_ActiveIteration.end() != ErrorCode.ERR_TASK_ALREADY_STOPPED )
             {
-                /* Add the iteration's runtime to the task's running total */
-                long iterationRuntimeMs = m_ActiveIteration.getRuntimeMs();
-                m_ActiveIteration.getTask().addRuntimeMs( iterationRuntimeMs );
-
-                /* Add the stopped active iteration to the queue */
+                /* Add the stopped active iteration to the task log */
                 m_TaskLog.add( m_ActiveIteration );
+                m_ActiveIteration = null;
             }
         }
     }

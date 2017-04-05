@@ -38,10 +38,12 @@
     <string name="invalid_task_dialog_title">Invalid Task Name</string>
     <string name="invalid_task_name_zero_dialog_msg">You must enter a valid task name.</string>
     <string name="invalid_task_name_length_dialog_msg">A task name cannot be longer than %1$d characters.</string>
+    <string name="invalid_task_duplicate_dialog_msg">A task with this name has already been added.</string>
 
     <!-- TaskLogActivity -->
     <string name="task_log_activity_title">Task Log</string>
-    <string name="task_log_header">User task log:\n</string>
+    <string name="task_log_header">User task log:</string>
+    <string name="task_log_empty">(Completed task iterations will be shown here)</string>
 
     <!-- WorkdaySummaryActiity -->
     <string name="workday_summary_activity_title">Workday Summary</string>

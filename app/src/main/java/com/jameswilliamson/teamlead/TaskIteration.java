@@ -20,7 +20,7 @@ class TaskIteration
     /* Private member fields */
     private Task m_Task;                           /* The associated task; this is an iteration of this task */
     private long m_StartTimestampMs;               /* A timestamp captured when the user switches to this task */
-    private long m_TotalRuntimeMs;                 /* The total runtime of this iteration, when concluded */
+    private long m_IterationRuntimeMs;             /* The total runtime of this iteration, when concluded */
     private boolean m_Active;                      /* Marks whether or not this iteration is currently active */
 
     /**
@@ -32,7 +32,7 @@ class TaskIteration
     {
         m_Task = task;
         m_StartTimestampMs = 0;
-        m_TotalRuntimeMs = 0;
+        m_IterationRuntimeMs = 0;
         m_Active = false;
     }
 
@@ -56,7 +56,7 @@ class TaskIteration
     {
         ErrorCode taskErr = ErrorCode.ERR_NONE;
 
-        if( ( m_Active == false ) && ( m_TotalRuntimeMs == 0 ) )
+        if( ( m_Active == false ) && ( m_IterationRuntimeMs == 0 ) )
         {
             /* Capture a starting timestamp */
             m_StartTimestampMs = SystemClock.elapsedRealtime();
@@ -86,8 +86,11 @@ class TaskIteration
 
         if( m_Active == true )
         {
-            /* Add the time spent on the task to the running total */
-            m_TotalRuntimeMs = ( SystemClock.elapsedRealtime() - m_StartTimestampMs );
+            /* Done; capture the total time spent */
+            m_IterationRuntimeMs = ( SystemClock.elapsedRealtime() - m_StartTimestampMs );
+
+            /* Update the parent task's runtime with this iteration */
+            m_Task.addRuntimeMs( m_IterationRuntimeMs );
 
             /* Mark this iteration as inactive, and also mark the corresponding task as inactive as well */
             m_Active = false;
@@ -118,7 +121,7 @@ class TaskIteration
         }
         else
         {
-            currentRuntimeMs = m_TotalRuntimeMs;
+            currentRuntimeMs = m_IterationRuntimeMs;
         }
 
         return( currentRuntimeMs );
@@ -131,6 +134,6 @@ class TaskIteration
      */
     @Override public String toString()
     {
-        return( m_Task.getTaskName() + ": " + Workday.convertMsToFormattedTimeString( getRuntimeMs() ) );
+        return( Workday.convertMsToFormattedTimeString( getRuntimeMs() ) + " (" + m_Task.getTaskName() + ")" );
     }
 }

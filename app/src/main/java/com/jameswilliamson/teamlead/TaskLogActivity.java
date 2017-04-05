@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.Iterator;
 
 public class TaskLogActivity extends AppCompatActivity
@@ -55,18 +56,32 @@ public class TaskLogActivity extends AppCompatActivity
      */
     private void writeLog()
     {
+        /* For the log, format the task index with two digits, minimum */
+        DecimalFormat formatter = new DecimalFormat( "00" );
+
         /* Retrieve the list of tasks */
         Workday userWorkday = ((TeamLeadApplication)getApplication() ).getWorkdayModel();
         Iterator<TaskIteration> tasks = userWorkday.getTaskLogIterator();
 
         /* Set header */
-        m_TaskLog.setText( getString( R.string.task_log_header ) );
-        
-        // TODO: 4/2/2017 Need to get the current iteration, too. This won't do that yet. 
+        m_TaskLog.setText( getString( R.string.task_log_header ) + "\n" );
 
-        while( tasks.hasNext() )
+        /* Retrieve the size of the task log */
+        int taskLogSize = userWorkday.getTaskLogSize();
+
+        if( taskLogSize == 0 )
         {
-            m_TaskLog.append( tasks.next().toString() + "\n" );
+            /* Nothing to display; give the user a hint */
+            m_TaskLog.append( getString( R.string.task_log_empty ) );
+        }
+        else
+        {
+            /* Iterate through the log and display the content on the UI */
+            while( tasks.hasNext() )
+            {
+                m_TaskLog.append( "[" + formatter.format( taskLogSize ) + "] " + tasks.next().toString() + "\n" );
+                taskLogSize--;
+            }
         }
     }
 }

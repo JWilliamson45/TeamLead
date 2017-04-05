@@ -32,9 +32,9 @@ public class AddNewTaskActivity extends AppCompatActivity
     /* Private constants */
     private int MIN_COLOR_VALUE = 0;           /* The minimum value allowed for a color value */
     private int MAX_COLOR_VALUE = 255;         /* The maximum value allowed for a color value */
-    private int RED_COLOR_DEFAULT = 66;        /* Default value for red component of task button color */
+    private int RED_COLOR_DEFAULT = 72;        /* Default value for red component of task button color */
     private int GREEN_COLOR_DEFAULT = 134;     /* Default value for green component of task button color */
-    private int BLUE_COLOR_DEFAULT = 244;      /* Default value for blue component of task button color */
+    private int BLUE_COLOR_DEFAULT = 206;      /* Default value for blue component of task button color */
     private int ALPHA_DEFAULT = 255;           /* Default value for alpha component of task button color */
 
     /* Private member fields */
@@ -151,33 +151,22 @@ public class AddNewTaskActivity extends AppCompatActivity
         public void onClick( View v )
         {
             int userTaskNameLength = m_AddTaskNameField.getText().length();
+            boolean displayErrorDialog = false;
+            String errorDialogMessage = null;
 
+            /* Evaluate the length of the proposed task name */
             if( userTaskNameLength == 0 )
             {
                 /* Don't allow tasks with empty string names */
-                String displayMsg = getResources().getString( R.string.invalid_task_name_zero_dialog_msg );
-
-                /* Pass message to error dialog and show it to the user */
-                Bundle dialogBundle = new Bundle();
-                dialogBundle.putString( "message", displayMsg );
-
-                InvalidTaskNameDialog invalidTaskDialog = new InvalidTaskNameDialog();
-                invalidTaskDialog.setArguments( dialogBundle );
-                invalidTaskDialog.show( m_ThisActivity.getFragmentManager(), InvalidTaskNameDialog.TAG );
+                errorDialogMessage = getResources().getString( R.string.invalid_task_name_zero_dialog_msg );
+                displayErrorDialog = true;
             }
             else if( userTaskNameLength > Task.TASK_NAME_CHARS_MAX )
             {
                 /* Don't allow tasks with names longer than the allowable limit */
-                String displayMsg = String.format( getResources().getString(
+                errorDialogMessage = String.format( getResources().getString(
                         R.string.invalid_task_name_length_dialog_msg ), Task.TASK_NAME_CHARS_MAX );
-
-                /* Pass message to error dialog and show it to the user */
-                Bundle dialogBundle = new Bundle();
-                dialogBundle.putString( "message", displayMsg );
-
-                InvalidTaskNameDialog invalidTaskDialog = new InvalidTaskNameDialog();
-                invalidTaskDialog.setArguments( dialogBundle );
-                invalidTaskDialog.show( m_ThisActivity.getFragmentManager(), InvalidTaskNameDialog.TAG );
+                displayErrorDialog = true;
             }
             else
             {
@@ -194,9 +183,30 @@ public class AddNewTaskActivity extends AppCompatActivity
 
                 /* Add the task to the workday model */
                 Workday userWorkday = ( (TeamLeadApplication)getApplication() ).getWorkdayModel();
-                userWorkday.addTask( createdTask );
 
-                /* Return to the ContextSwitch screen */
+                if( userWorkday.addTask( createdTask ) == ErrorCode.ERR_TASK_DUPLICATE )
+                {
+                    /* Duplicate task - inform the user that it cannot be added */
+                    errorDialogMessage = getResources().getString( R.string.invalid_task_duplicate_dialog_msg );
+                    displayErrorDialog = true;
+                }
+            }
+
+            /* Based on input, either display an error dialog, or return to the ContextSwitch UI */
+            if( displayErrorDialog == true )
+            {
+                /* Package up the appropriate message so it can be passed to the error dialog */
+                Bundle dialogBundle = new Bundle();
+                dialogBundle.putString( "message", errorDialogMessage );
+
+                /* Build and display the dialog fragment */
+                InvalidTaskNameDialog invalidTaskDialog = new InvalidTaskNameDialog();
+                invalidTaskDialog.setArguments( dialogBundle );
+                invalidTaskDialog.show( m_ThisActivity.getFragmentManager(), InvalidTaskNameDialog.TAG );
+            }
+            else
+            {
+                /* Success */
                 startActivity( new Intent( m_ThisActivity, ContextSwitchActivity.class ) );
             }
         }

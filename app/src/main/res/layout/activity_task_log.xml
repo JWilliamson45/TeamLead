@@ -41,7 +41,8 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:typeface="monospace"/>
 
     </RelativeLayout>
 
