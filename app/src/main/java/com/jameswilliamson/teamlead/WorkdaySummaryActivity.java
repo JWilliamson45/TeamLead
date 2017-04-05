@@ -5,7 +5,6 @@
  * activity may depend on user preferences.
  *
  * @author James Williamson
- * @version 0.3.0
  *
  * @formatter:off
  */

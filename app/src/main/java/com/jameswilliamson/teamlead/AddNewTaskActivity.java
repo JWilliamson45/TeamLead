@@ -5,7 +5,6 @@
  * added to the ContextSwitch activity and tracked.
  *
  * @author James Williamson
- * @version 0.3.0
  *
  * @formatter:off
  */
@@ -218,7 +217,7 @@ public class AddNewTaskActivity extends AppCompatActivity
     public static class InvalidTaskNameDialog extends DialogFragment
     {
         /* Private constants */
-        private final static String TAG = "Invalid Task";
+        public final static String TAG = "Invalid Task";
 
         /**
          * Builds the dialog's container.

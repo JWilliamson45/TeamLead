@@ -1,7 +1,7 @@
 /**
- * UnsupportedFunctionDialog.java
+ * About.java
  *
- * Used to alert a user of an attempt at an unsupported operation.
+ * Displays a dialog containing information about the application.
  *
  * @author James Williamson
  *
@@ -16,10 +16,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 
-public class UnsupportedFunctionDialog extends DialogFragment
+public class AboutDialog extends DialogFragment
 {
     /* Private constants */
-    public final static String TAG = "Unsupported Function";
+    public final static String TAG = "About";
 
     /**
      * Builds the dialog's container.
@@ -31,11 +31,16 @@ public class UnsupportedFunctionDialog extends DialogFragment
     @Override
     public Dialog onCreateDialog( Bundle savedInstanceState )
     {
-        /* Construct a dialog to inform the user that the operation is unsupported. */
         AlertDialog.Builder builder = new AlertDialog.Builder( getActivity() );
 
-        builder.setTitle( getResources().getString( R.string.invalid_function_dialog_title ) );
-        builder.setMessage( getResources().getString( R.string.invalid_function_dialog_msg ) );
+        builder.setTitle( getResources().getString( R.string.about_dialog_title ) );
+
+        /* Display author and version information */
+        builder.setMessage( getResources().getString( R.string.about_dialog_author ) + " " +
+                            getResources().getString( R.string.app_author ) + "\n" +
+                            getResources().getString( R.string.about_dialog_version ) + ": " +
+                            getResources().getString( R.string.app_version ) + "\n\n" +
+                            getResources().getString( R.string.app_url ) );
 
         /* Allows user to dismiss the dialog */
         builder.setPositiveButton( R.string.ok_button_label, new CloseDialogButtonListener() );

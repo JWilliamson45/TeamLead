@@ -4,7 +4,6 @@
  * Custom widget that renders a pie chart.
  *
  * @author James Williamson
- * @version 0.3.0
  *
  * @formatter:off
  */

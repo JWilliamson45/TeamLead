@@ -4,7 +4,6 @@
  * Models an individual task that a team leader may perform in a typical workday.
  *
  * @author James Williamson
- * @version 0.3.0
  *
  * @formatter:off
  */

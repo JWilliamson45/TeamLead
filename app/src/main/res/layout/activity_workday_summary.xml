@@ -6,7 +6,6 @@
     Layout specification for the WorkdaySummary activity.
 
     @author James Williamson
-    @version 0.3.0
 -->
 
 <RelativeLayout

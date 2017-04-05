@@ -4,7 +4,6 @@
  * Represents the common state of the TeamLead application.
  *
  * @author James Williamson
- * @version 0.3.0
  *
  * @formatter:off
  */

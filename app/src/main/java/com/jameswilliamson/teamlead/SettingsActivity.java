@@ -4,13 +4,13 @@
  * Android activity for the settings screen, which displays configurable user preferences for the application.
  *
  * @author James Williamson
- * @version 0.3.0
  *
  * @formatter:off
  */
 
 package com.jameswilliamson.teamlead;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -108,23 +108,9 @@ public class SettingsActivity extends AppCompatActivity
                 Context appContext = getActivity().getApplicationContext();
                 ListPreference preference = (ListPreference)findPreference( key );
 
-                /* Determine what new preference has been selected, and change the button colors accordingly */
-                if( preference.getValue().equals( "color-BLUE" ) )
-                {
-                    // TODO: 3/27/2017 Deprecated; remove
-                }
-                else if( preference.getValue().equals( "color-GREEN" ) )
-                {
-                    // TODO: 3/27/2017 Deprecated; remove
-                }
-                else if( preference.getValue().equals( "color-RED" ) )
-                {
-                    // TODO: 3/27/2017 Deprecated; remove
-                }
-                else if( preference.getValue().equals( "color-YELLOW" ) )
-                {
-                    // TODO: 3/27/2017 Deprecated; remove
-                }
+                // TODO: 4/4/2017 This has been deprecated in favor of the individual task coloring feature - remove
+                UnsupportedFunctionDialog errDialog = new UnsupportedFunctionDialog();
+                errDialog.show( getActivity().getFragmentManager(), UnsupportedFunctionDialog.TAG );
             }
         }
     }

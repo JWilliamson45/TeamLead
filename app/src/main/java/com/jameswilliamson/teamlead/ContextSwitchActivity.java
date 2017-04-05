@@ -5,7 +5,6 @@
  * performing with the push of a button.
  *
  * @author James Williamson
- * @version 0.3.0
  *
  * @formatter:off
  */
@@ -151,6 +150,8 @@ public class ContextSwitchActivity extends AppCompatActivity
                 break;
 
             case R.id.about:
+                AboutDialog aboutDialog = new AboutDialog();
+                aboutDialog.show( m_ThisActivity.getFragmentManager(), AboutDialog.TAG );
                 break;
 
             default:

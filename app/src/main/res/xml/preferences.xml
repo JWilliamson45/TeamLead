@@ -6,7 +6,6 @@
     Stores user preferences for the TeamLead application.
 
     @author James Williamson
-    @version 0.3.0
 -->
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">

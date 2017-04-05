@@ -6,7 +6,6 @@
     Menu specification for use with the task button context menus.
 
     @author James Williamson
-    @version 0.3.0
 -->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">

@@ -5,7 +5,6 @@
  * performed by the user and the time spent on each.
  *
  * @author James Williamson
- * @version 0.3.0
  *
  * @formatter:off
  */

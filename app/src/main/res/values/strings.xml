@@ -6,11 +6,15 @@
     TeamLead application string definitions.
 
     @author James Williamson
-    @version 0.3.0
 -->
 
 <resources>
+
+    <!-- Application information -->
     <string name="app_name">TeamLead</string>
+    <string name="app_author">James Williamson</string>
+    <string name="app_version">0.4.0</string>
+    <string name="app_url">github.com/JWilliamson45/TeamLead</string>
 
     <!-- ContextSwitchActivity -->
     <string name="context_switch_activity_title">TeamLead</string>
@@ -79,6 +83,11 @@
     <!-- Task button context menu -->
     <string name="task_context_menu_delete_title">Delete</string>
     <string name="task_context_menu_edit_title">Edit</string>
+
+    <!-- AboutDialog -->
+    <string name="about_dialog_title">About TeamLead</string>
+    <string name="about_dialog_author">Written by</string>
+    <string name="about_dialog_version">Version</string>
 
     <!-- UnsupportedFunctionDialog -->
     <string name="invalid_function_dialog_title">Unsupported Function</string>
