@@ -84,6 +84,25 @@ public class Workday
     }
 
     /**
+     * Removes the task at the specified index from the Workday.
+     *
+     * @param taskIndex The index of the task.
+     * @return An error code indicative of success or failure.
+     */
+    ErrorCode deleteTask( int taskIndex )
+    {
+        ErrorCode taskErr = ErrorCode.ERR_TASK_INVALID;
+
+        /* Boundary check */
+        if( taskIndex < m_Tasks.size() )
+        {
+            taskErr = deleteTask( m_Tasks.get( taskIndex ) );
+        }
+
+        return( taskErr );
+    }
+
+    /**
      * Removes the given task from the Workday.
      *
      * @param task A task to remove from the Workday.

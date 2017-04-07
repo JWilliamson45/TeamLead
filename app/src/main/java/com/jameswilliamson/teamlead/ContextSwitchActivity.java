@@ -123,6 +123,37 @@ public class ContextSwitchActivity extends AppCompatActivity
     }
 
     /**
+     * Invoked whenever an item in a context menu is selected in order to perform the appropriate processing.
+     *
+     * @param item The context menu item that was selected.
+     * @return Return false to allow normal context menu processing to proceed, true to consume it here.
+     */
+    @Override
+    public boolean onContextItemSelected( MenuItem item )
+    {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        boolean handled;
+
+        switch( item.getItemId() )
+        {
+            case R.id.delete_task:
+                m_UserWorkday.deleteTask( info.position );
+                handled = true;
+                break;
+
+            case R.id.edit_task:
+                handled = true;
+                break;
+
+            default:
+                handled = super.onContextItemSelected( item );
+                break;
+        }
+
+        return( handled );
+    }
+
+    /**
      * Called whenever the ContextSwitchActivity's options menu is clicked by the user.
      *
      * @param item The selected menu item.
