@@ -378,7 +378,7 @@ public class Workday
      */
     static String convertMsToFormattedTimeString( long milliseconds )
     {
-        DecimalFormat m_TimeFormatter = new DecimalFormat( "00" );
+        DecimalFormat timeFormatter = new DecimalFormat( "00" );
         String timeString = "00:00:00";
 
         /* Convert total millisecond value to hours, minutes, and seconds */
@@ -391,11 +391,11 @@ public class Workday
         minutes = ( minutes % MINS_PER_HOUR );
 
         /* Build string and return to user */
-        timeString = m_TimeFormatter.format( hours );
+        timeString = timeFormatter.format( hours );
         timeString = timeString.concat( ":" );
-        timeString = timeString.concat( m_TimeFormatter.format( minutes ) );
+        timeString = timeString.concat( timeFormatter.format( minutes ) );
         timeString = timeString.concat( ":" );
-        timeString = timeString.concat( m_TimeFormatter.format( seconds ) );
+        timeString = timeString.concat( timeFormatter.format( seconds ) );
 
         return( timeString );
     }
