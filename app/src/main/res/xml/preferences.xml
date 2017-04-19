@@ -18,4 +18,13 @@
         android:persistent="true"
         android:entries="@array/Color"
         android:entryValues="@array/ColorAlias"/>
+    <ListPreference
+        android:key="@string/pref_tile_refresh_key"
+        android:title="@string/pref_tile_refresh_title"
+        android:summary="@string/pref_tile_refresh_summary"
+        android:defaultValue="pref_tile_refresh_quarter"
+        android:enabled="true"
+        android:persistent="true"
+        android:entries="@array/Refresh"
+        android:entryValues="@array/RefreshAlias"/>
 </PreferenceScreen>

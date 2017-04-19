@@ -19,6 +19,7 @@ import android.preference.PreferenceFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 public class SettingsActivity extends AppCompatActivity
 {
@@ -101,16 +102,35 @@ public class SettingsActivity extends AppCompatActivity
         @Override
         public void onSharedPreferenceChanged( SharedPreferences sharedPreferences, String key )
         {
+            TeamLeadApplication app = (TeamLeadApplication)getActivity().getApplication();
+            ListPreference preference = (ListPreference)findPreference( key );
+
             if( key.equals( getResources().getString( R.string.pref_tile_color_key ) ) )
             {
                 /* Task tile color preference has been selected */
-                TeamLeadApplication app = (TeamLeadApplication)getActivity().getApplication();
-                Context appContext = getActivity().getApplicationContext();
-                ListPreference preference = (ListPreference)findPreference( key );
-
                 // TODO: 4/4/2017 This has been deprecated in favor of the individual task coloring feature - remove
                 UnsupportedFunctionDialog errDialog = new UnsupportedFunctionDialog();
                 errDialog.show( getActivity().getFragmentManager(), UnsupportedFunctionDialog.TAG );
+            }
+            else if( key.equals( getResources().getString( R.string.pref_tile_refresh_key ) ) )
+            {
+                /* Task tile refresh preference has been selected */
+                if( preference.getValue().equals( "refresh-100ms" ) )
+                {
+                    app.setTaskTileRefreshRate( TeamLeadApplication.REFRESH_RATE_100_MS );
+                }
+                else if( preference.getValue().equals( "refresh-500ms" ) )
+                {
+                    app.setTaskTileRefreshRate( TeamLeadApplication.REFRESH_RATE_500_MS );
+                }
+                else if( ( preference.getValue().equals( "refresh-1s" ) ) )
+                {
+                    app.setTaskTileRefreshRate( TeamLeadApplication.REFRESH_RATE_1000_MS );
+                }
+                else if( ( preference.getValue().equals( "refresh-5s" ) ) )
+                {
+                    app.setTaskTileRefreshRate( TeamLeadApplication.REFRESH_RATE_5000_MS );
+                }
             }
         }
     }

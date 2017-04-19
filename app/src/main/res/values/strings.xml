@@ -13,7 +13,7 @@
     <!-- Application information -->
     <string name="app_name">TeamLead</string>
     <string name="app_author">James Williamson</string>
-    <string name="app_version">0.4.0</string>
+    <string name="app_version">0.5.0</string>
     <string name="app_url">github.com/JWilliamson45/TeamLead</string>
 
     <!-- ContextSwitchActivity -->
@@ -58,6 +58,10 @@
     <string name="pref_tile_color_title">Task Tile Color</string>
     <string name="pref_tile_color_summary">Change the color of the task tiles"</string>
     <string name="pref_tile_color_blue">Blue</string>
+    <string name="pref_tile_refresh_key">pref_taskTileRefresh</string>
+    <string name="pref_tile_refresh_title">Task Tile Refresh</string>
+    <string name="pref_tile_refresh_summary">Set the task UI refresh interval</string>
+    <string name="pref_tile_refresh_quarter">250ms</string>
     <string name="title_activity_settings">Settings</string>
 
     <string-array name="Color">
@@ -72,6 +76,20 @@
         <item>"color-GREEN"</item>
         <item>"color-RED"</item>
         <item>"color-YELLOW"</item>
+    </string-array>
+
+    <string-array name="Refresh">
+        <item>100 milliseconds</item>
+        <item>500 milliseconds</item>
+        <item>1 second</item>
+        <item>5 seconds</item>
+    </string-array>
+
+    <string-array name="RefreshAlias">
+        <item>refresh-100ms</item>
+        <item>refresh-500ms</item>
+        <item>refresh-1s</item>
+        <item>refresh-5s</item>
     </string-array>
 
     <!-- Options menu -->

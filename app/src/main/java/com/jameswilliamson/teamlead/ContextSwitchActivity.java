@@ -33,9 +33,11 @@ import java.util.TimerTask;
 public class ContextSwitchActivity extends AppCompatActivity
 {
     /* Private member fields */
-    private Workday m_UserWorkday;             /* The user workday model to depict on screen */
-    private GridView m_TaskGrid;               /* The grid of buttons (tasks) displayed to the user */
-    private Activity m_ThisActivity;           /* A reference to this activity */
+    private Workday m_UserWorkday;               /* The user workday model to depict on screen */
+    private GridView m_TaskGrid;                 /* The grid of buttons (tasks) displayed to the user */
+    private Activity m_ThisActivity;             /* A reference to this activity */
+    private Timer m_ScreenUpdateTimer;           /* A timer that is used to update the UI */
+    private TeamLeadApplication m_Application;   /* Reference to the application object */
 
     /**
      * Called when the activity is created - initialization for the activity is performed here.
@@ -57,7 +59,8 @@ public class ContextSwitchActivity extends AppCompatActivity
         setSupportActionBar( m_Toolbar );
 
         /* Initialization of members */
-        m_UserWorkday = ( ( TeamLeadApplication)getApplication() ).getWorkdayModel();
+        m_Application = (TeamLeadApplication)getApplication();
+        m_UserWorkday = m_Application.getWorkdayModel();
         m_TaskGrid = (GridView)findViewById( R.id.context_switch_grid );
         m_ThisActivity = this;
 
@@ -70,10 +73,27 @@ public class ContextSwitchActivity extends AppCompatActivity
 
         /* Assign listeners */
         m_TaskGrid.setOnItemClickListener( new gridClickHandler() );
+    }
+
+    /**
+     * Called when the activity is visible and ready to start interacting with the user.
+     */
+    public void onResume()
+    {
+        /* Call superclass implementation first */
+        super.onResume();
+
+        /* Retrieve stored refresh rate */
+        int refreshRateMs = m_Application.getTaskTileRefreshRate();
 
         /* Set up the timer that will repaint the view */
-        Timer m_ScreenUpdateTimer = new Timer();
-        m_ScreenUpdateTimer.scheduleAtFixedRate( new ActivityTimerTask( this ), 0, 1000 );
+        if( m_ScreenUpdateTimer != null )
+        {
+            m_ScreenUpdateTimer.cancel();
+        }
+
+        m_ScreenUpdateTimer = new Timer();
+        m_ScreenUpdateTimer.scheduleAtFixedRate( new ActivityTimerTask( this ), 0, refreshRateMs );
     }
 
     /**
