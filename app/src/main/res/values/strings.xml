@@ -57,11 +57,11 @@
     <string name="pref_tile_color_key">pref_taskTileColor</string>
     <string name="pref_tile_color_title">Task Tile Color</string>
     <string name="pref_tile_color_summary">Change the color of the task tiles"</string>
-    <string name="pref_tile_color_blue">Blue</string>
+    <string name="pref_tile_color_default">Blue</string>
     <string name="pref_tile_refresh_key">pref_taskTileRefresh</string>
     <string name="pref_tile_refresh_title">Task Tile Refresh</string>
     <string name="pref_tile_refresh_summary">Set the task UI refresh interval</string>
-    <string name="pref_tile_refresh_quarter">250ms</string>
+    <string name="pref_tile_refresh_default">100ms</string>
     <string name="title_activity_settings">Settings</string>
 
     <string-array name="Color">
