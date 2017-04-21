@@ -25,7 +25,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.WindowManager;import android.widget.AdapterView;
 import android.widget.GridView;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -49,6 +49,9 @@ public class ContextSwitchActivity extends AppCompatActivity
     {
         /* Call superclass implementation first */
         super.onCreate( savedInstanceState );
+
+        /* Show this activity on the device lock screen */
+        getWindow().addFlags( WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED );
 
         /* Inflate layout */
         setContentView( R.layout.activity_context_switch );
