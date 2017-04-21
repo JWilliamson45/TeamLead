@@ -73,7 +73,7 @@ public class Workday
              * Add the new task to the list of user-defined tasks, but rather than inserting them at the very end of
              * the list, insert them before the "special tasks" so that they are shown last on the UI.
              */
-            m_Tasks.add( m_Tasks.size() - NUM_SPECIAL_TASKS, newTask );
+            m_Tasks.add( getNumberOfUserTasks(), newTask );
         }
         else
         {
@@ -164,8 +164,7 @@ public class Workday
     }
 
     /**
-     * Returns the number of entries in the task log. Note that this does not include the current iteration (which is
-     * technically not yet added to the log).
+     * Returns the number of entries in the task log, including the current iteration.
      *
      * @return The number of entries in the task log.
      */
@@ -214,14 +213,39 @@ public class Workday
     {
         ErrorCode taskErr = ErrorCode.ERR_NONE;
 
-        /* Cannot perform context switch to a special task */
-        if( newTaskIndex < ( m_Tasks.size() - NUM_SPECIAL_TASKS ) )
+        /* Bounds check */
+        if( newTaskIndex < getNumberOfUserTasks() )
         {
-            endTask();
-            beginTask( newTaskIndex );
+            boolean eligibleToSwitch = true;
+
+            if( m_ActiveIteration != null )
+            {
+                /* A task is active - make sure user isn't trying to switch to current task */
+                String activeTaskName = m_ActiveIteration.getTask().getTaskName();
+                String newTaskName = m_Tasks.get( newTaskIndex ).getTaskName();
+
+                if( activeTaskName.equals( newTaskName ) )
+                {
+                    /* No switch can occur */
+                    eligibleToSwitch = false;
+                }
+            }
+
+            if( eligibleToSwitch )
+            {
+                /* Perform the switch; end the current task and start the new one */
+                endTask();
+                beginTask( newTaskIndex );
+            }
+            else
+            {
+                /* Cannot context switch to the already-active task */
+               taskErr = ErrorCode.ERR_TASK_ALREADY_STARTED;
+            }
         }
         else
         {
+            /* Cannot perform context switch to a special task */
             taskErr = ErrorCode.ERR_TASK_INVALID;
         }
 
@@ -412,6 +436,9 @@ public class Workday
 
         /* Begin tracking time spent on the task */
         m_ActiveIteration.start();
+
+        /* Add the active iteration to the task log */
+        m_TaskLog.add( m_ActiveIteration );
     }
 
     /**
@@ -424,8 +451,6 @@ public class Workday
             /* Stop the iteration */
             if( m_ActiveIteration.end() != ErrorCode.ERR_TASK_ALREADY_STOPPED )
             {
-                /* Add the stopped active iteration to the task log */
-                m_TaskLog.add( m_ActiveIteration );
                 m_ActiveIteration = null;
             }
         }

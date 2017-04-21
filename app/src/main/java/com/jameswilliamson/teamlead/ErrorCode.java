@@ -17,7 +17,9 @@ enum ErrorCode
     ERR_TASK_ALREADY_STARTED( 1, "The selected task is already started" ),
     ERR_TASK_ALREADY_STOPPED( 2, "The selected task is already stopped" ),
     ERR_TASK_INVALID( 3, "The specified task is invalid" ),
-    ERR_TASK_DUPLICATE( 4, "The specified task has already been created" );
+    ERR_TASK_DUPLICATE( 4, "The specified task has already been created" ),
+    ERR_MEDIA_UNAVAILABLE( 5, "Unable to write file; media is busy or unavailable" ),
+    ERR_FILE_WRITE( 6, "Unable to write file; a problem occurred with the operation" );
 
     /* Enumeration constants */
     private final int m_errCode;

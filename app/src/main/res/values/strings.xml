@@ -47,9 +47,9 @@
     <!-- TaskLogActivity -->
     <string name="task_log_activity_title">Task Log</string>
     <string name="task_log_header">User task log:</string>
-    <string name="task_log_empty">(Completed task iterations will be shown here)</string>
+    <string name="task_log_empty">(Logged task iterations will be shown here)</string>
 
-    <!-- WorkdaySummaryActiity -->
+    <!-- WorkdaySummaryActivity -->
     <string name="workday_summary_activity_title">Workday Summary</string>
 
     <!-- SettingsActivity -->
