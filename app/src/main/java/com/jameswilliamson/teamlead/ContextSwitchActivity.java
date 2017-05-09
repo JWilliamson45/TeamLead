@@ -20,6 +20,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;import android.widget.AdapterView;
 import android.widget.GridView;
-import java.util.Timer;
+import java.io.IOException;import java.util.Timer;
 import java.util.TimerTask;
 
 public class ContextSwitchActivity extends AppCompatActivity
@@ -81,6 +82,7 @@ public class ContextSwitchActivity extends AppCompatActivity
     /**
      * Called when the activity is visible and ready to start interacting with the user.
      */
+    @Override
     public void onResume()
     {
         /* Call superclass implementation first */
@@ -97,6 +99,29 @@ public class ContextSwitchActivity extends AppCompatActivity
 
         m_ScreenUpdateTimer = new Timer();
         m_ScreenUpdateTimer.scheduleAtFixedRate( new ActivityTimerTask( this ), 0, refreshRateMs );
+    }
+
+    /**
+     * Called when the activity is no longer visible to the user.
+     */
+    public void onStop()
+    {
+        super.onStop();
+
+        Log.d( "Info", "CONTEXT UI STOPPED" );
+
+        try
+        {
+            /* Save the Workday data in case the application does not resume */
+            m_Application.saveWorkday();
+        }
+        catch( IOException io_exception )
+        {
+            /* A problem occurred and the data could not be saved */
+            // TODO: 4/23/2017 Log appropriately
+            Log.d( "Info", "COULD NOT SAVE WORKDAY" );
+            io_exception.printStackTrace();
+        }
     }
 
     /**

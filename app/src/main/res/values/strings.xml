@@ -13,7 +13,7 @@
     <!-- Application information -->
     <string name="app_name">TeamLead</string>
     <string name="app_author">James Williamson</string>
-    <string name="app_version">0.5.0</string>
+    <string name="app_version">0.6.0</string>
     <string name="app_url">github.com/JWilliamson45/TeamLead</string>
 
     <!-- ContextSwitchActivity -->
@@ -110,4 +110,8 @@
     <!-- UnsupportedFunctionDialog -->
     <string name="invalid_function_dialog_title">Unsupported Function</string>
     <string name="invalid_function_dialog_msg">This functionality is not supported in this version.</string>
+
+    <!-- File I/O -->
+    <string name="completed_workday_file_prefix">TL_Workday_</string>
+    <string name="active_workday_file_name">TL_Workday_Active</string>
 </resources>

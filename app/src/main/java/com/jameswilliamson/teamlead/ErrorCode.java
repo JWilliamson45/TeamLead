@@ -19,7 +19,8 @@ enum ErrorCode
     ERR_TASK_INVALID( 3, "The specified task is invalid" ),
     ERR_TASK_DUPLICATE( 4, "The specified task has already been created" ),
     ERR_MEDIA_UNAVAILABLE( 5, "Unable to write file; media is busy or unavailable" ),
-    ERR_FILE_WRITE( 6, "Unable to write file; a problem occurred with the operation" );
+    ERR_FILE_WRITE( 6, "Unable to write file; a problem occurred with the operation" ),
+    ERR_FILE_READ( 7, "Unable to read file; a problem occurred with the operation" );
 
     /* Enumeration constants */
     private final int m_errCode;
